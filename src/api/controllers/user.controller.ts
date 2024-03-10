@@ -1,10 +1,40 @@
 import { Request, Response } from 'express';
-import {createUser} from "../../db/dal/user.dal";
+import jwt from 'jsonwebtoken';
+import UserService from '../services/user.service';
+import { UserInput } from '../../db/models/user.model';
 
-export const postUser = async (req: Request, res: Response) => {
-    const payload = req.body;
+class UserController {
+    // This method registers a new user
+    static async registerUser(req: Request, res: Response) {
+        try {
+            const payload: UserInput = req.body;
 
-    const user = await createUser(payload);
+            const user = await UserService.registerUser(payload);
 
-    res.status(201).json(user);
+            const { id, firstName, lastName, email } = user;
+
+            res.status(201).json({ id, firstName, lastName, email });
+        } catch (error) {
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+
+    // This method generates a token for the user
+    static async loginUser(req: Request, res: Response) {
+        try {
+            const user = res.locals.user;
+
+            // Sign token with user data
+            const token = jwt.sign({
+                email: user.email,
+                userId: user.id
+            }, 'secret');
+
+            res.status(200).json({ token });
+        } catch (error) {
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
 }
+
+export default UserController;

@@ -1,6 +1,6 @@
-import express, {Application} from 'express';
-import routes from "./api/routes";
-import dbInit from "./db/init";
+import express, { Application } from 'express';
+import routes from './api/routes';
+import dbInit from './db/init';
 
 dbInit();
 
@@ -15,7 +15,7 @@ app.use('/api/v1', routes);
 
 try {
     app.listen(port, () => {
-        console.log(`Server is running on port ${port}`);
+        console.log(`Server is running on port ${ port }`);
     });
 } catch (error) {
     console.log(error);
