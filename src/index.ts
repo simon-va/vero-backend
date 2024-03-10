@@ -1,13 +1,22 @@
-import express from 'express';
+import express, {Application} from 'express';
+import routes from "./api/routes";
+import dbInit from "./db/init";
 
+dbInit();
+
+const app: Application = express();
 const port = 3000;
 
-const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
 
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
-});
+app.use('/api/v1', routes);
+
+try {
+    app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+    });
+} catch (error) {
+    console.log(error);
+}
