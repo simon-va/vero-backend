@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import UserService from '../services/user.service';
-import { UserInput } from '../../db/models/user.model';
+import { RegisterUserBody } from '../../types/user';
 
 class UserController {
     // This method registers a new user
     static async registerUser(req: Request, res: Response) {
         try {
-            const payload: UserInput = req.body;
+            const payload: RegisterUserBody = req.body;
 
             const user = await UserService.registerUser(payload);
 

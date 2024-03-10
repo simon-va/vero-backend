@@ -1,10 +1,11 @@
 import bcryptjs from 'bcryptjs';
 import { User } from '../../db/models';
-import { UserInput, UserOutput } from '../../db/models/user.model';
+import { UserOutput } from '../../db/models/user.model';
+import { RegisterUserBody } from '../../types/user';
 
 class UserService {
     // This method sets the user data in the database
-    static async registerUser(payload: UserInput): Promise<UserOutput> {
+    static async registerUser(payload: RegisterUserBody): Promise<UserOutput> {
         const { password } = payload;
 
         const salt = bcryptjs.genSaltSync(10);

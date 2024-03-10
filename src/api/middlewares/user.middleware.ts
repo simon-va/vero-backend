@@ -1,13 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { User } from '../../db/models';
 import Validator from 'fastest-validator';
-import { UserInput } from '../../db/models/user.model';
 import bcryptjs from 'bcryptjs';
-
-interface UserLoginBody {
-    email: string;
-    password: string;
-}
+import { LoginUserBody, RegisterUserBody } from '../../types/user';
 
 class UserMiddleware {
     // This middleware checks if the user already exists and if the payload is valid
@@ -40,7 +35,7 @@ class UserMiddleware {
             });
         }
 
-        const payload: UserInput = req.body;
+        const payload: RegisterUserBody = req.body;
 
         const user = await User.findOne({
             where: {
@@ -78,7 +73,7 @@ class UserMiddleware {
             });
         }
 
-        const { email, password }: UserLoginBody = req.body;
+        const { email, password }: LoginUserBody = req.body;
 
         // Check if user exists
         const user = await User.findOne({
