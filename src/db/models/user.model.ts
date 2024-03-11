@@ -12,7 +12,6 @@ export interface UserAttributes {
     //timestamps
     createdAt?: Date;
     updatedAt?: Date;
-    deletedAt?: Date | null;
 }
 
 export interface UserOutput extends Required<UserAttributes> {
@@ -28,7 +27,6 @@ class User extends Model {
     //timestamps
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
-    public readonly deletedAt!: Date;
 }
 
 User.init({
@@ -57,7 +55,6 @@ User.init({
 }, {
     timestamps: true,
     sequelize: sequelize,
-    paranoid: true,
     tableName: 'users'
 });
 

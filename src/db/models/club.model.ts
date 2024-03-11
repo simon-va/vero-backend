@@ -9,7 +9,6 @@ export interface ClubAttributes {
     //timestamps
     createdAt?: Date;
     updatedAt?: Date;
-    deletedAt?: Date | null;
 }
 
 export interface ClubOutput extends Required<ClubAttributes> {
@@ -22,7 +21,6 @@ class Club extends Model {
     //timestamps
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
-    public readonly deletedAt!: Date;
 }
 
 Club.init({
@@ -38,7 +36,6 @@ Club.init({
 }, {
     timestamps: true,
     sequelize: sequelize,
-    paranoid: true,
     modelName: 'club'
 });
 

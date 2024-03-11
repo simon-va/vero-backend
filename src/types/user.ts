@@ -5,5 +5,5 @@ export type RegisterUserBody = Pick<UserAttributes, 'firstName' | 'lastName' | '
 export type LoginUserBody = Pick<UserAttributes, 'email' | 'password'>;
 
 export interface UserWithMembersAndClubs extends UserAttributes {
-    members: MemberWithClubs[];
+    members: MemberWithClubs[] | null;
 }

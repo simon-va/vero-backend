@@ -45,6 +45,20 @@ class ClubController {
             res.status(500).json({ errorMessage: 'Internal server error' });
         }
     }
+
+    static async deleteClub(req: Request, res: Response) {
+        try {
+            const { clubId } = req.params;
+
+            await ClubService.deleteClub(Number(clubId));
+
+            res.status(200).json({ message: 'Club deleted successfully' });
+        } catch (error) {
+            console.log(error);
+
+            res.status(500).json({ errorMessage: 'Internal server error' });
+        }
+    }
 }
 
 export default ClubController;

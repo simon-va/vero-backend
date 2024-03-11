@@ -15,7 +15,6 @@ export interface MemberAttributes {
     //timestamps
     createdAt?: Date;
     updatedAt?: Date;
-    deletedAt?: Date | null;
 }
 
 export interface MemberOutput extends Required<MemberAttributes> {
@@ -33,7 +32,6 @@ class Member extends Model {
     //timestamps
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
-    public readonly deletedAt!: Date;
 }
 
 Member.init({
@@ -70,7 +68,6 @@ Member.init({
 }, {
     timestamps: true,
     sequelize: sequelize,
-    paranoid: true,
     tableName: 'members'
 });
 

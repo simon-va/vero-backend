@@ -18,7 +18,7 @@ class UserMiddleware {
             },
             email: {
                 required: true,
-                type: 'string'
+                type: 'email'
             },
             password: {
                 required: true,
@@ -56,7 +56,7 @@ class UserMiddleware {
         const schema = {
             email: {
                 required: true,
-                type: 'string'
+                type: 'email'
             },
             password: {
                 required: true,

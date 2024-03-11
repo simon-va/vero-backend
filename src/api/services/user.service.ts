@@ -36,7 +36,7 @@ class UserService {
             return null;
         }
 
-        return user.members.map(({ club }) => club);
+        return user.members?.map(({ club }) => club).filter(Boolean) || [];
     }
 }
 
