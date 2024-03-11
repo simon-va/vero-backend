@@ -3,6 +3,7 @@ import { CreateClubBody } from '../../types/club';
 import ClubService from '../services/club.service';
 import User from '../../db/models/user.model';
 import MemberService from '../services/member.service';
+import UserService from '../services/user.service';
 
 class ClubController {
     static async createClub(req: Request, res: Response) {
@@ -24,6 +25,20 @@ class ClubController {
             });
 
             res.status(201).json({ club, member });
+        } catch (error) {
+            console.log(error)
+
+            res.status(500).json({ errorMessage: 'Internal server error' });
+        }
+    }
+
+    static async getClubsByUserId(req: Request, res: Response) {
+        try {
+            const { id }: User = res.locals.user;
+
+            const clubs = await UserService.getClubsByUserId(id);
+
+            res.status(200).json({ clubs });
         } catch (error) {
             res.status(500).json({ errorMessage: 'Internal server error' });
         }
