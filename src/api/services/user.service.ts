@@ -20,13 +20,14 @@ class UserService {
     }
 
     static async getClubsByUserId(userId: UserAttributes['id']) {
-        const user =  await User.findByPk(userId, {
+        const user = await User.findByPk(userId, {
             include: [{
                 model: Member,
                 as: 'members',
                 include: [{
                     model: Club,
-                    as: 'club'
+                    as: 'club',
+                    attributes: ['id', 'name']
                 }]
             }]
         }) as UserWithMembersAndClubs | null;
@@ -35,7 +36,7 @@ class UserService {
             return null;
         }
 
-        return user.members.map(({ club }) => ({ id: club.id, name: club.name }));
+        return user.members.map(({ club }) => club);
     }
 }
 
