@@ -1,6 +1,5 @@
 import bcryptjs from 'bcryptjs';
-import { User } from '../../db/models';
-import { UserOutput } from '../../db/models/user.model';
+import User, { UserOutput } from '../../db/models/user.model';
 import { RegisterUserBody } from '../../types/user';
 
 class UserService {

@@ -1,13 +1,16 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config';
-import Member from './member.model';
+import { UserAttributes } from './user.model';
+import { ClubAttributes } from './club.model';
 
-export interface UserAttributes {
+export interface MemberAttributes {
     id: number;
     firstName: string;
     lastName: string;
-    email: string;
-    password: string;
+    userId?: UserAttributes['id'];
+    clubId: ClubAttributes['id'];
+    email?: string;
+    isAdmin: boolean;
 
     //timestamps
     createdAt?: Date;
@@ -15,15 +18,17 @@ export interface UserAttributes {
     deletedAt?: Date | null;
 }
 
-export interface UserOutput extends Required<UserAttributes> {
+export interface MemberOutput extends Required<MemberAttributes> {
 }
 
-class User extends Model {
+class Member extends Model {
     public id!: number;
     public firstName!: string;
     public lastName!: string;
+    public userId!: UserAttributes['id'];
+    public clubId!: ClubAttributes['id'];
     public email!: string;
-    public password!: string;
+    isAdmin!: boolean;
 
     //timestamps
     public readonly createdAt!: Date;
@@ -31,7 +36,7 @@ class User extends Model {
     public readonly deletedAt!: Date;
 }
 
-User.init({
+Member.init({
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -45,30 +50,29 @@ User.init({
         type: DataTypes.STRING,
         allowNull: false
     },
+    userId: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    clubId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     email: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true
     },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
+    isAdmin: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
     }
 }, {
     timestamps: true,
     sequelize: sequelize,
     paranoid: true,
-    tableName: 'users'
+    tableName: 'members'
 });
 
-User.hasMany(Member, {
-    foreignKey: 'userId',
-    as: 'members'
-});
-
-Member.belongsTo(User, {
-    foreignKey: 'userId',
-    as: 'user',
-})
-
-export default User;
+export default Member;

@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { User } from '../../db/models';
 import Validator from 'fastest-validator';
 import bcryptjs from 'bcryptjs';
 import { LoginUserBody, RegisterUserBody } from '../../types/user';
+import User from '../../db/models/user.model';
 
 class UserMiddleware {
     // This middleware checks if the user already exists and if the payload is valid
