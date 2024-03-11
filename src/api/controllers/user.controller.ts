@@ -15,7 +15,9 @@ class UserController {
 
             res.status(201).json({ id, firstName, lastName, email });
         } catch (error) {
-            res.status(500).json({ error: 'Internal server error' });
+            console.log(error);
+
+            res.status(500).json({ errorMessage: 'Internal server error' });
         }
     }
 
@@ -32,7 +34,9 @@ class UserController {
 
             res.status(200).json({ token });
         } catch (error) {
-            res.status(500).json({ error: 'Internal server error' });
+            console.log(error);
+
+            res.status(500).json({ errorMessage: 'Internal server error' });
         }
     }
 }

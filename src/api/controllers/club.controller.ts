@@ -26,7 +26,7 @@ class ClubController {
 
             res.status(201).json({ club, member });
         } catch (error) {
-            console.log(error)
+            console.log(error);
 
             res.status(500).json({ errorMessage: 'Internal server error' });
         }
@@ -40,6 +40,8 @@ class ClubController {
 
             res.status(200).json({ clubs });
         } catch (error) {
+            console.log(error);
+
             res.status(500).json({ errorMessage: 'Internal server error' });
         }
     }
