@@ -3,6 +3,43 @@ import Member from '../../db/models/member.model';
 import Validator from 'fastest-validator';
 
 class MemberMiddleware {
+    static async validateMemberCreation(req: Request, res: Response, next: NextFunction) {
+        const member: Member = res.locals.member;
+
+        if (!member.isAdmin) {
+            return res.status(401).json({ errorMessage: 'Unauthorized' });
+        }
+
+        const schema = {
+            firstName: {
+                required: true,
+                type: 'string'
+            },
+            lastName: {
+                required: true,
+                type: 'string'
+            },
+            email: {
+                optional: true,
+                type: 'email'
+            },
+            isAdmin: {
+                optional: true,
+                type: 'boolean'
+            }
+        }
+
+        const v = new Validator();
+        const validationResponse = v.validate(req.body, schema);
+
+        if (validationResponse !== true) {
+            return res.status(400).json({
+                errorMessage: 'Validation failed', errors: validationResponse
+            });
+        }
+
+        next();
+    }
     static async validateMemberUpdate(req: Request, res: Response, next: NextFunction) {
         const member: Member = res.locals.member;
 
