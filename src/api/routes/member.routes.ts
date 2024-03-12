@@ -5,6 +5,7 @@ import MemberMiddleware from '../middlewares/member.middleware';
 
 const router = Router();
 
+router.get('/:clubId/members', AuthMiddleware.verifyTokenWithMember, MemberController.getMembersByClubId);
 router.patch('/:clubId/members/:memberId', AuthMiddleware.verifyTokenWithMember, MemberMiddleware.validateMemberUpdate, MemberController.updateMember);
 
 export default router;

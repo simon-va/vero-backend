@@ -15,6 +15,13 @@ class MemberService {
     static async getMemberByUserAndClubId(userId: UserAttributes['id'], clubId: ClubAttributes['id']): Promise<MemberOutput | null> {
         return await Member.findOne({ where: { userId, clubId } });
     }
+
+    static async getMembersByClubId(clubId: ClubAttributes['id']): Promise<MemberOutput[]> {
+        return await Member.findAll({
+            where: { clubId },
+            attributes: ['id', 'firstName', 'lastName', 'email', 'isAdmin']
+        });
+    }
 }
 
 export default MemberService;

@@ -64,6 +64,7 @@ class AuthMiddleware {
             }
 
             res.locals.member = member;
+            res.locals.clubId = clubId;
 
             next();
         } catch (error) {
