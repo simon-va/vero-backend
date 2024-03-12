@@ -4,8 +4,8 @@ import ClubController from '../controllers/club.controller';
 
 const router = Router();
 
-router.get('', AuthMiddleware.verifyToken, ClubController.getClubsByUserId);
-router.post('', AuthMiddleware.verifyToken, ClubController.createClub);
-router.delete('/:clubId', AuthMiddleware.verifyToken, AuthMiddleware.verifyIsAdmin, ClubController.deleteClub);
+router.get('', AuthMiddleware.verifyTokenWithUser, ClubController.getClubsByUserId);
+router.post('', AuthMiddleware.verifyTokenWithUser, ClubController.createClub);
+router.delete('/:clubId', AuthMiddleware.verifyTokenWithMember, ClubController.deleteClub);
 
 export default router;

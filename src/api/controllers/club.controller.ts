@@ -4,6 +4,7 @@ import ClubService from '../services/club.service';
 import User from '../../db/models/user.model';
 import MemberService from '../services/member.service';
 import UserService from '../services/user.service';
+import Member from '../../db/models/member.model';
 
 class ClubController {
     static async createClub(req: Request, res: Response) {
@@ -48,9 +49,15 @@ class ClubController {
 
     static async deleteClub(req: Request, res: Response) {
         try {
-            const { clubId } = req.params;
+            const member: Member = res.locals.member;
 
-            await ClubService.deleteClub(Number(clubId));
+            if (!member.isAdmin) {
+                res.status(401).json({ errorMessage: 'You are not authorized to delete this club' });
+            }
+
+            const clubId = Number(req.params.clubId);
+
+            await ClubService.deleteClub(clubId);
 
             res.status(200).json({ message: 'Club deleted successfully' });
         } catch (error) {

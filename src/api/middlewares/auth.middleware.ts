@@ -6,7 +6,7 @@ import Member from '../../db/models/member.model';
 import MemberService from '../services/member.service';
 
 class AuthMiddleware {
-    static async verifyToken(req: Request, res: Response, next: NextFunction) {
+    static async verifyTokenWithUser(req: Request, res: Response, next: NextFunction) {
         const accessToken = req.headers['authorization']?.split(' ')[1];
 
         if (!accessToken) {
@@ -36,20 +36,41 @@ class AuthMiddleware {
         }
     }
 
-    static async verifyIsAdmin(req: Request, res: Response, next: NextFunction) {
-        const { clubId } = req.params;
+    static async verifyTokenWithMember(req: Request, res: Response, next: NextFunction) {
+        const accessToken = req.headers['authorization']?.split(' ')[1];
 
-        const user = res.locals.user as User;
 
-        const member = await MemberService.getMemberByUserAndClubId(user.id, Number(clubId));
-
-        if (!member || !member.isAdmin) {
-            res.status(401).json({ errorMessage: 'Unauthorized - The user is not an admin' });
+        if (!accessToken) {
+            return res.status(401).json({ errorMessage: 'Invalid token - AccessToken not found' });
         }
 
-        res.locals.member = member;
+        try {
+            const decoded = jwt.verify(accessToken, 'secret') as AccessTokenPayload;
 
-        next();
+            if (!decoded) {
+                return res.status(401).json({ errorMessage: 'Invalid token - Token not verified' });
+            }
+
+            const clubId = Number(req.params.clubId);
+
+            if (!clubId) {
+                return res.status(401).json({ errorMessage: 'Provide a clubId in params' });
+            }
+
+            const member = await MemberService.getMemberByUserAndClubId(decoded.userId, clubId);
+
+            if (!member) {
+                return res.status(401).json({ errorMessage: 'Invalid token - member not found' });
+            }
+
+            res.locals.member = member;
+
+            next();
+        } catch (error) {
+            console.error(error);
+
+            res.status(400).json({ errorMessage: 'Invalid token' });
+        }
     }
 }
 
