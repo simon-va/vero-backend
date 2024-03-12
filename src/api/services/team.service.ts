@@ -1,21 +1,21 @@
-import Team, { TeamAttributes, TeamOutput } from '../../db/models/team.model';
-import Member2Team, { Member2TeamOutput } from '../../db/models/member2team.model';
-
-type AddTeamPayload = Pick<TeamAttributes, 'name' | 'clubId'>;
+import Team from '../../db/models/team.model';
+import Member2Team from '../../db/models/member2team.model';
+import { CreationTeamAttributes, TeamAttributes } from '../../types/team';
+import { MemberAttributes } from '../../types/member';
 
 class TeamService {
-    static async addTeam(payload: AddTeamPayload): Promise<TeamOutput> {
+    static async addTeam(payload: CreationTeamAttributes) {
         return await Team.create(payload);
     }
 
-    static async addMemberToTeam(teamId: number, memberId: number): Promise<Member2TeamOutput> {
+    static async addMemberToTeam(teamId: TeamAttributes['id'], memberId: MemberAttributes['id']) {
         return await Member2Team.create({
             teamId,
             memberId
         });
     }
 
-    static async deleteMemberFromTeam(teamId: number, memberId: number): Promise<void> {
+    static async deleteMemberFromTeam(teamId: TeamAttributes['id'], memberId: MemberAttributes['id']): Promise<void> {
         await Member2Team.destroy({
             where: {
                 teamId,

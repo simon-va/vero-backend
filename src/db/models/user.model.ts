@@ -1,32 +1,38 @@
-import { DataTypes, Model } from 'sequelize';
+import {
+    Association,
+    CreationOptional,
+    DataTypes,
+    InferAttributes,
+    InferCreationAttributes,
+    Model,
+    NonAttribute
+} from 'sequelize';
 import sequelize from '../config';
 import Member from './member.model';
 
-export interface UserAttributes {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
+class User extends Model<
+    InferAttributes<User>,
+    InferCreationAttributes<User>
+> {
+    // id can be undefined during creation when using `autoIncrement`
+    declare id: CreationOptional<number>;
+    declare firstName: string;
+    declare lastName: string;
+    declare email: string;
+    declare password: string;
 
-    //timestamps
-    createdAt?: Date;
-    updatedAt?: Date;
-}
+    // timestamps!
+    // createdAt can be undefined during creation
+    declare createdAt: CreationOptional<Date>;
+    // updatedAt can be undefined during creation
+    declare updatedAt: CreationOptional<Date>;
 
-export interface UserOutput extends Required<UserAttributes> {
-}
+    // associations
+    declare members?: NonAttribute<Member[]>;
 
-class User extends Model {
-    public id!: number;
-    public firstName!: string;
-    public lastName!: string;
-    public email!: string;
-    public password!: string;
-
-    //timestamps
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
+    declare static associations: {
+        members: Association<User, Member>;
+    };
 }
 
 User.init({
@@ -51,7 +57,9 @@ User.init({
     password: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
 }, {
     timestamps: true,
     sequelize: sequelize,
@@ -65,7 +73,7 @@ User.hasMany(Member, {
 
 Member.belongsTo(User, {
     foreignKey: 'userId',
-    as: 'user',
-})
+    as: 'user'
+});
 
 export default User;

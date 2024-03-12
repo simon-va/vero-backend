@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import Validator from 'fastest-validator';
 import bcryptjs from 'bcryptjs';
-import { LoginUserBody, RegisterUserBody } from '../../types/user';
+import { CreationUserAttributes, LoginUserBody } from '../../types/user';
 import User from '../../db/models/user.model';
 
 class UserMiddleware {
@@ -35,7 +35,7 @@ class UserMiddleware {
             });
         }
 
-        const payload: RegisterUserBody = req.body;
+        const payload: CreationUserAttributes = req.body;
 
         const user = await User.findOne({
             where: {

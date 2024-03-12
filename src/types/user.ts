@@ -1,9 +1,7 @@
-import { UserAttributes } from '../db/models/user.model';
-import { MemberWithClubs } from './member';
+import { Attributes, CreationAttributes } from 'sequelize';
+import User from '../db/models/user.model';
 
-export type RegisterUserBody = Pick<UserAttributes, 'firstName' | 'lastName' | 'email' | 'password'>;
-export type LoginUserBody = Pick<UserAttributes, 'email' | 'password'>;
+export type UserAttributes = Attributes<User>
+export type CreationUserAttributes = CreationAttributes<User>
 
-export interface UserWithMembersAndClubs extends UserAttributes {
-    members: MemberWithClubs[] | null;
-}
+export type LoginUserBody = Pick<UserAttributes, 'email' | 'password'>

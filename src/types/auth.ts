@@ -1,4 +1,4 @@
-import { UserAttributes } from '../db/models/user.model';
+import { UserAttributes } from './user';
 
 export interface AccessTokenPayload {
     email: UserAttributes['email'];

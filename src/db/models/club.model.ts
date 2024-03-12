@@ -1,27 +1,38 @@
-import { DataTypes, Model } from 'sequelize';
+import {
+    Association,
+    CreationOptional,
+    DataTypes,
+    InferAttributes,
+    InferCreationAttributes,
+    Model,
+    NonAttribute
+} from 'sequelize';
 import sequelize from '../config';
 import Member from './member.model';
 import Team from './team.model';
 
-export interface ClubAttributes {
-    id: number;
-    name: string;
+class Club extends Model<
+    InferAttributes<Club>,
+    InferCreationAttributes<Club>
+> {
+    // id can be undefined during creation when using `autoIncrement`
+    declare id: CreationOptional<number>;
+    declare name: string;
 
-    //timestamps
-    createdAt?: Date;
-    updatedAt?: Date;
-}
+    // timestamps!
+    // createdAt can be undefined during creation
+    declare createdAt: CreationOptional<Date>;
+    // updatedAt can be undefined during creation
+    declare updatedAt: CreationOptional<Date>;
 
-export interface ClubOutput extends Required<ClubAttributes> {
-}
+    declare members?: NonAttribute<Member[]>;
+    declare teams?: NonAttribute<Team[]>;
 
-class Club extends Model {
-    public id!: number;
-    public name!: string;
-
-    //timestamps
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
+    // associations
+    declare static associations: {
+        members: Association<Club, Member>;
+        teams: Association<Club, Team>;
+    };
 }
 
 Club.init({
@@ -33,7 +44,9 @@ Club.init({
     name: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
 }, {
     timestamps: true,
     sequelize: sequelize,

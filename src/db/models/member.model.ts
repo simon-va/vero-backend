@@ -1,37 +1,42 @@
-import { DataTypes, Model } from 'sequelize';
+import {
+    Association,
+    CreationOptional,
+    DataTypes,
+    ForeignKey,
+    InferAttributes,
+    InferCreationAttributes,
+    Model,
+    NonAttribute
+} from 'sequelize';
 import sequelize from '../config';
-import { UserAttributes } from './user.model';
-import { ClubAttributes } from './club.model';
+import User from './user.model';
+import Club from './club.model';
 
-export interface MemberAttributes {
-    id: number;
-    firstName: string;
-    lastName: string;
-    userId?: UserAttributes['id'];
-    clubId: ClubAttributes['id'];
-    email?: string;
-    isAdmin: boolean;
+class Member extends Model<
+    InferAttributes<Member>,
+    InferCreationAttributes<Member>
+> {
+    declare id: CreationOptional<number>;
+    declare firstName: string;
+    declare lastName: string;
+    declare userId: ForeignKey<User['id']>;
+    declare clubId: number;
+    declare email: string;
+    declare isAdmin: boolean;
 
-    //timestamps
-    createdAt?: Date;
-    updatedAt?: Date;
-}
+    // timestamps!
+    // createdAt can be undefined during creation
+    declare createdAt: CreationOptional<Date>;
+    // updatedAt can be undefined during creation
+    declare updatedAt: CreationOptional<Date>;
 
-export interface MemberOutput extends Required<MemberAttributes> {
-}
+    declare user?: NonAttribute<User>;
+    declare club?: NonAttribute<Club>;
 
-class Member extends Model {
-    public id!: number;
-    public firstName!: string;
-    public lastName!: string;
-    public userId!: UserAttributes['id'];
-    public clubId!: ClubAttributes['id'];
-    public email!: string;
-    isAdmin!: boolean;
-
-    //timestamps
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
+    // associations
+    declare static associations: {
+        user: Association<Member, User>;
+    };
 }
 
 Member.init({
@@ -64,7 +69,9 @@ Member.init({
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false
-    }
+    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
 }, {
     timestamps: true,
     sequelize: sequelize,

@@ -1,17 +1,17 @@
 import { Request, Response } from 'express';
-import { CreateClubBody } from '../../types/club';
 import ClubService from '../services/club.service';
-import User from '../../db/models/user.model';
 import MemberService from '../services/member.service';
 import UserService from '../services/user.service';
-import Member from '../../db/models/member.model';
+import { CreationClubAttributes } from '../../types/club';
+import { UserAttributes } from '../../types/user';
+import { MemberAttributes } from '../../types/member';
 
 class ClubController {
     static async createClub(req: Request, res: Response) {
         try {
-            const user: User = res.locals.user;
+            const user: UserAttributes = res.locals.user;
 
-            const body: CreateClubBody = req.body;
+            const body: CreationClubAttributes = req.body;
 
             const club = await ClubService.createClub(body);
 
@@ -35,7 +35,7 @@ class ClubController {
 
     static async getClubsByUserId(req: Request, res: Response) {
         try {
-            const { id }: User = res.locals.user;
+            const { id }: UserAttributes = res.locals.user;
 
             const clubs = await UserService.getClubsByUserId(id);
 
@@ -49,7 +49,7 @@ class ClubController {
 
     static async deleteClub(req: Request, res: Response) {
         try {
-            const member: Member = res.locals.member;
+            const member: MemberAttributes = res.locals.member;
 
             if (!member.isAdmin) {
                 res.status(401).json({ errorMessage: 'You are not authorized to delete this club' });

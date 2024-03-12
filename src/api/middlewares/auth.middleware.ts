@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import User from '../../db/models/user.model';
 import { AccessTokenPayload } from '../../types/auth';
-import Member from '../../db/models/member.model';
 import MemberService from '../services/member.service';
 
 class AuthMiddleware {

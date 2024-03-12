@@ -1,30 +1,34 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
 import sequelize from '../config';
-import Member, { MemberAttributes } from './member.model';
-import Team, { TeamAttributes } from './team.model';
+import Member from './member.model';
+import Team from './team.model';
 
-interface Member2TeamAttributes {
-    memberId: MemberAttributes['id'];
-    teamId: TeamAttributes['id'];
+class Member2Team extends Model<
+    InferAttributes<Member2Team>,
+    InferCreationAttributes<Member2Team>
+> {
+    declare memberId: number;
+    declare teamId: number;
 
-    //timestamps
-    createdAt?: Date;
-    updatedAt?: Date;
+    // timestamps!
+    // createdAt can be undefined during creation
+    declare createdAt: CreationOptional<Date>;
+    // updatedAt can be undefined during creation
+    declare updatedAt: CreationOptional<Date>;
 }
 
-export interface Member2TeamOutput extends Required<Member2TeamAttributes> {
-}
-
-class Member2Team extends Model {
-    public memberId!: number;
-    public teamId!: number;
-
-    //timestamps
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
-}
-
-Member2Team.init({}, {
+Member2Team.init({
+    memberId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    teamId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
+}, {
     timestamps: true,
     sequelize: sequelize,
     tableName: 'Member2Team'

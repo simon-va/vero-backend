@@ -1,14 +1,15 @@
 import { Request, Response } from 'express';
 import TeamService from '../services/team.service';
-import { ClubAttributes } from '../../db/models/club.model';
-import Member, { MemberAttributes } from '../../db/models/member.model';
 import Member2Team from '../../db/models/member2team.model';
+import { ClubAttributes } from '../../types/club';
+import { CreationTeamAttributes } from '../../types/team';
+import { MemberAttributes } from '../../types/member';
 
 class TeamController {
     static async addTeam(req: Request, res: Response) {
         try {
             const clubId: ClubAttributes['id'] = res.locals.clubId;
-            const body = req.body;
+            const body: CreationTeamAttributes = req.body;
 
             const team = await TeamService.addTeam({
                 name: body.name,
@@ -54,7 +55,7 @@ class TeamController {
 
     static async deleteMemberFromTeam(req: Request, res: Response) {
         const teamId = Number(req.params.teamId);
-        const member: Member = res.locals.member;
+        const member: MemberAttributes = res.locals.member;
 
         if (!teamId) {
             return res.status(400).send({ errorMessage: 'Missing valid TeamId' });

@@ -1,12 +1,11 @@
 import bcryptjs from 'bcryptjs';
-import User, { UserAttributes, UserOutput } from '../../db/models/user.model';
-import { RegisterUserBody, UserWithMembersAndClubs } from '../../types/user';
+import User from '../../db/models/user.model';
 import Member from '../../db/models/member.model';
 import Club from '../../db/models/club.model';
+import { CreationUserAttributes, UserAttributes } from '../../types/user';
 
 class UserService {
-    // This method sets the user data in the database
-    static async registerUser(payload: RegisterUserBody): Promise<UserOutput> {
+    static async registerUser(payload: CreationUserAttributes) {
         const { password } = payload;
 
         const salt = bcryptjs.genSaltSync(10);
@@ -30,7 +29,7 @@ class UserService {
                     attributes: ['id', 'name']
                 }]
             }]
-        }) as UserWithMembersAndClubs | null;
+        });
 
         if (!user) {
             return null;

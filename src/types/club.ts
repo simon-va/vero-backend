@@ -1,3 +1,5 @@
-import { ClubAttributes } from '../db/models/club.model';
+import { Attributes, CreationAttributes } from 'sequelize';
+import Club from '../db/models/club.model';
 
-export type CreateClubBody = Pick<ClubAttributes, 'name'>
+export type ClubAttributes = Attributes<Club>
+export type CreationClubAttributes = CreationAttributes<Club>

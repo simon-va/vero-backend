@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
-import Member from '../../db/models/member.model';
 import MemberService from '../services/member.service';
-import { ClubAttributes } from '../../db/models/club.model';
-import { CreateMemberPayload } from '../../types/member';
 import ClubService from '../services/club.service';
+import { ClubAttributes } from '../../types/club';
+import { CreationMemberAttributes, MemberAttributes } from '../../types/member';
 
 class MemberController {
     static async getMembersByClubId(req: Request, res: Response) {
         try {
             const clubId: ClubAttributes['id'] = res.locals.clubId;
+
             const members = await MemberService.getMembersByClubId(clubId);
 
             res.json(members);
@@ -20,11 +20,12 @@ class MemberController {
     }
 
     static async createMember(req: Request, res: Response) {
-        const payload: CreateMemberPayload = {
+        const payload: CreationMemberAttributes = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             isAdmin: req.body.isAdmin || false,
-            clubId: res.locals.clubId
+            clubId: res.locals.clubId,
+            email: req.body.email || '',
         };
 
         try {
@@ -40,7 +41,7 @@ class MemberController {
 
     static async updateMember(req: Request, res: Response) {
         try {
-            const member: Member = res.locals.member;
+            const member: MemberAttributes = res.locals.member;
 
             if (!member.isAdmin) {
                 return res.status(401).json({ errorMessage: 'Unauthorized' });
@@ -59,13 +60,13 @@ class MemberController {
     static async deleteMember(req: Request, res: Response) {
         try {
             const clubId: ClubAttributes['id'] = res.locals.clubId;
-            const member: Member = res.locals.member;
+            const member: MemberAttributes = res.locals.member;
 
             if (!member.isAdmin) {
                 return res.status(401).json({ errorMessage: 'Unauthorized' });
             }
 
-            const memberId: Member['id'] = Number(req.params.memberId);
+            const memberId: MemberAttributes['id'] = Number(req.params.memberId);
 
             if (!memberId) {
                 return res.status(400).json({ errorMessage: 'Provide a memberId in params' });

@@ -1,28 +1,20 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
 import sequelize from '../config';
-import { ClubAttributes } from './club.model';
 
-export interface TeamAttributes {
-    id: number;
-    name: string;
-    clubId: ClubAttributes['id'];
+class Team extends Model<
+    InferAttributes<Team>,
+    InferCreationAttributes<Team>
+> {
+    // id can be undefined during creation when using `autoIncrement`
+    declare id: CreationOptional<number>;
+    declare name: string;
+    declare clubId: number;
 
-    //timestamps
-    createdAt?: Date;
-    updatedAt?: Date;
-}
-
-export interface TeamOutput extends Required<TeamAttributes> {
-}
-
-class Team extends Model {
-    public id!: number;
-    public name!: string;
-    public clubId!: number;
-
-    //timestamps
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
+    // timestamps!
+    // createdAt can be undefined during creation
+    declare createdAt: CreationOptional<Date>;
+    // updatedAt can be undefined during creation
+    declare updatedAt: CreationOptional<Date>;
 }
 
 Team.init({
@@ -38,7 +30,9 @@ Team.init({
     clubId: {
         type: DataTypes.INTEGER,
         allowNull: false
-    }
+    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
 }, {
     timestamps: true,
     sequelize: sequelize,
