@@ -58,7 +58,7 @@ Member.init({
     },
     email: {
         type: DataTypes.STRING,
-        allowNull: true,
+        defaultValue: ''
     },
     isAdmin: {
         type: DataTypes.BOOLEAN,
