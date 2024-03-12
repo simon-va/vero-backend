@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import TeamService from '../services/team.service';
 import { ClubAttributes } from '../../db/models/club.model';
-import { MemberAttributes } from '../../db/models/member.model';
+import Member, { MemberAttributes } from '../../db/models/member.model';
 import Member2Team from '../../db/models/member2team.model';
 
 class TeamController {
@@ -45,6 +45,25 @@ class TeamController {
             await TeamService.addMemberToTeam(teamId, member.id);
 
             return res.status(201).send();
+        } catch (error) {
+            console.log(error);
+
+            res.status(500).send({ errorMessage: 'Internal server error' });
+        }
+    }
+
+    static async deleteMemberFromTeam(req: Request, res: Response) {
+        const teamId = Number(req.params.teamId);
+        const member: Member = res.locals.member;
+
+        if (!teamId) {
+            return res.status(400).send({ errorMessage: 'Missing valid TeamId' });
+        }
+
+        try {
+            await TeamService.deleteMemberFromTeam(teamId, member.id);
+
+            return res.status(200).send();
         } catch (error) {
             console.log(error);
 

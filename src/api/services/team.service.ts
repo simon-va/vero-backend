@@ -14,6 +14,15 @@ class TeamService {
             memberId
         });
     }
+
+    static async deleteMemberFromTeam(teamId: number, memberId: number): Promise<void> {
+        await Member2Team.destroy({
+            where: {
+                teamId,
+                memberId
+            }
+        });
+    }
 }
 
 export default TeamService;
