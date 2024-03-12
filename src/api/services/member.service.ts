@@ -22,6 +22,9 @@ class MemberService {
             attributes: ['id', 'firstName', 'lastName', 'email', 'isAdmin']
         });
     }
+    static async deleteMember(memberId: Member['id']): Promise<void> {
+        await Member.destroy({ where: { id: memberId } });
+    }
 }
 
 export default MemberService;
