@@ -10,8 +10,8 @@ class TeamService {
 
     static async addMemberToTeam(teamId: number, memberId: number): Promise<Member2TeamOutput> {
         return await Member2Team.create({
-            TeamId: teamId,
-            MemberId: memberId
+            teamId,
+            memberId
         });
     }
 }
