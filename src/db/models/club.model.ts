@@ -1,6 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config';
 import Member from './member.model';
+import Team from './team.model';
 
 export interface ClubAttributes {
     id: number;
@@ -45,6 +46,16 @@ Club.hasMany(Member, {
 });
 
 Member.belongsTo(Club, {
+    foreignKey: 'clubId',
+    as: 'club'
+});
+
+Club.hasMany(Team, {
+    foreignKey: 'clubId',
+    as: 'teams'
+});
+
+Team.belongsTo(Club, {
     foreignKey: 'clubId',
     as: 'club'
 });
