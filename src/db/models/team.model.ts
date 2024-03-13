@@ -1,5 +1,8 @@
 import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
 import sequelize from '../config';
+import Club from './club.model';
+import Member from './member.model';
+import Member2Team from './member2team.model';
 
 class Team extends Model<
     InferAttributes<Team>,
@@ -37,6 +40,17 @@ Team.init({
     timestamps: true,
     sequelize: sequelize,
     tableName: 'teams'
+});
+
+Team.belongsTo(Club, {
+    foreignKey: 'clubId',
+    as: 'club'
+});
+
+Team.belongsToMany(Member, {
+    through: Member2Team,
+    foreignKey: 'teamId',
+    otherKey: 'memberId'
 });
 
 export default Team;

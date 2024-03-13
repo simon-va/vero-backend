@@ -58,19 +58,9 @@ Club.hasMany(Member, {
     as: 'members'
 });
 
-Member.belongsTo(Club, {
-    foreignKey: 'clubId',
-    as: 'club'
-});
-
 Club.hasMany(Team, {
     foreignKey: 'clubId',
     as: 'teams'
-});
-
-Team.belongsTo(Club, {
-    foreignKey: 'clubId',
-    as: 'club'
 });
 
 export default Club;
