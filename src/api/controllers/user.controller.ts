@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import UserService from '../services/user.service';
 import { CreationUserAttributes, UserAttributes } from '../../types/user';
+import UserRepository from '../../db/repositories/user.repository';
 
 class UserController {
     static async registerUser(req: Request, res: Response) {
         try {
             const payload: CreationUserAttributes = req.body;
 
-            const user = await UserService.registerUser(payload);
+            const user = await UserRepository.registerUser(payload);
 
             const { id, firstName, lastName, email } = user;
 

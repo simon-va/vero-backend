@@ -1,10 +1,22 @@
-import bcryptjs from 'bcryptjs';
-import User from '../../db/models/user.model';
-import Member from '../../db/models/member.model';
-import Club from '../../db/models/club.model';
+import User from '../models/user.model';
 import { CreationUserAttributes, UserAttributes } from '../../types/user';
+import bcryptjs from 'bcryptjs';
+import Member from '../models/member.model';
+import Club from '../models/club.model';
 
-class UserService {
+class UserRepository {
+    static async getUserByEmail(email: UserAttributes['email']) {
+        return await User.findOne({
+            where: {
+                email
+            }
+        });
+    }
+
+    static async getUserById(id: UserAttributes['id']) {
+        return await User.findByPk(id);
+    }
+
     static async registerUser(payload: CreationUserAttributes) {
         const { password } = payload;
 
@@ -39,4 +51,4 @@ class UserService {
     }
 }
 
-export default UserService;
+export default UserRepository;

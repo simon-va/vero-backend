@@ -1,9 +1,9 @@
-import Member from '../../db/models/member.model';
 import { CreationMemberAttributes, UpdateMemberPayload } from '../../types/member';
+import Member from '../models/member.model';
 import { UserAttributes } from '../../types/user';
 import { ClubAttributes } from '../../types/club';
 
-class MemberService {
+class MemberRepository {
     static async createMember(payload: CreationMemberAttributes) {
         return await Member.create(payload);
     }
@@ -27,4 +27,4 @@ class MemberService {
     }
 }
 
-export default MemberService;
+export default MemberRepository;

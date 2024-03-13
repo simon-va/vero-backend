@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import TeamService from '../services/team.service';
 import Member2Team from '../../db/models/member2team.model';
 import { ClubAttributes } from '../../types/club';
 import { CreationTeamAttributes } from '../../types/team';
 import { MemberAttributes } from '../../types/member';
+import TeamRepository from '../../db/repositories/team.repository';
 
 class TeamController {
     static async addTeam(req: Request, res: Response) {
@@ -11,7 +11,7 @@ class TeamController {
             const clubId: ClubAttributes['id'] = res.locals.clubId;
             const body: CreationTeamAttributes = req.body;
 
-            const team = await TeamService.addTeam({
+            const team = await TeamRepository.createTeam({
                 name: body.name,
                 clubId: clubId
             });
@@ -43,7 +43,7 @@ class TeamController {
                 return res.status(409).send({ errorMessage: 'Member is already in team' });
             }
 
-            await TeamService.addMemberToTeam(teamId, member.id);
+            await TeamRepository.addMemberToTeam(teamId, member.id);
 
             return res.status(201).send();
         } catch (error) {
@@ -62,7 +62,7 @@ class TeamController {
         }
 
         try {
-            await TeamService.deleteMemberFromTeam(teamId, member.id);
+            await TeamRepository.removeMemberFromTeam(teamId, member.id);
 
             return res.status(200).send();
         } catch (error) {

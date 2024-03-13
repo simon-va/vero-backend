@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import ClubService from '../services/club.service';
-import MemberService from '../services/member.service';
-import UserService from '../services/user.service';
 import { CreationClubAttributes } from '../../types/club';
 import { UserAttributes } from '../../types/user';
 import { MemberAttributes } from '../../types/member';
+import UserRepository from '../../db/repositories/user.repository';
+import ClubRepository from '../../db/repositories/club.repository';
+import MemberRepository from '../../db/repositories/member.repository';
 
 class ClubController {
     static async createClub(req: Request, res: Response) {
@@ -13,9 +13,9 @@ class ClubController {
 
             const body: CreationClubAttributes = req.body;
 
-            const club = await ClubService.createClub(body);
+            const club = await ClubRepository.createClub(body);
 
-            const member = await MemberService.createMember({
+            const member = await MemberRepository.createMember({
                 userId: user.id,
                 firstName: user.firstName,
                 lastName: user.lastName,
@@ -37,7 +37,7 @@ class ClubController {
         try {
             const { id }: UserAttributes = res.locals.user;
 
-            const clubs = await UserService.getClubsByUserId(id);
+            const clubs = await UserRepository.getClubsByUserId(id);
 
             res.status(200).json({ clubs });
         } catch (error) {
@@ -57,7 +57,7 @@ class ClubController {
 
             const clubId = Number(req.params.clubId);
 
-            await ClubService.deleteClub(clubId);
+            await ClubRepository.deleteClub(clubId);
 
             res.status(200).json({ message: 'Club deleted successfully' });
         } catch (error) {

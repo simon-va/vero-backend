@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import User from '../../db/models/user.model';
 import { AccessTokenPayload } from '../../types/auth';
-import MemberService from '../services/member.service';
+import UserRepository from '../../db/repositories/user.repository';
+import MemberRepository from '../../db/repositories/member.repository';
 
 class AuthMiddleware {
     static async verifyTokenWithUser(req: Request, res: Response, next: NextFunction) {
@@ -19,7 +19,7 @@ class AuthMiddleware {
                 return res.status(401).json({ errorMessage: 'Invalid token - Token not verified' });
             }
 
-            const user = await User.findOne({ where: { id: decoded.userId } });
+            const user = await UserRepository.getUserById(decoded.userId);
 
             if (!user) {
                 return res.status(401).json({ errorMessage: 'Invalid token - user not found' });
@@ -56,7 +56,7 @@ class AuthMiddleware {
                 return res.status(401).json({ errorMessage: 'Provide a clubId in params' });
             }
 
-            const member = await MemberService.getMemberByUserAndClubId(decoded.userId, clubId);
+            const member = await MemberRepository.getMemberByUserAndClubId(decoded.userId, clubId);
 
             if (!member) {
                 return res.status(401).json({ errorMessage: 'Invalid token - member not found' });

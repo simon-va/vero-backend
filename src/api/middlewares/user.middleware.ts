@@ -3,6 +3,7 @@ import Validator from 'fastest-validator';
 import bcryptjs from 'bcryptjs';
 import { CreationUserAttributes, LoginUserBody } from '../../types/user';
 import User from '../../db/models/user.model';
+import UserRepository from '../../db/repositories/user.repository';
 
 class UserMiddleware {
     // This middleware checks if the user already exists and if the payload is valid
@@ -37,11 +38,7 @@ class UserMiddleware {
 
         const payload: CreationUserAttributes = req.body;
 
-        const user = await User.findOne({
-            where: {
-                email: payload.email
-            }
-        });
+        const user = await UserRepository.getUserByEmail(payload.email);
 
         if (user) {
             return res.status(409).json({ errorMessage: 'User already exists' });
@@ -76,11 +73,7 @@ class UserMiddleware {
         const { email, password }: LoginUserBody = req.body;
 
         // Check if user exists
-        const user = await User.findOne({
-            where: {
-                email
-            }
-        });
+        const user = await UserRepository.getUserByEmail(email);
 
         if (!user) {
             return res.status(404).json({ errorMessage: 'Invalid email or password' });

@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
-import MemberService from '../services/member.service';
-import ClubService from '../services/club.service';
 import { ClubAttributes } from '../../types/club';
 import { CreationMemberAttributes, MemberAttributes } from '../../types/member';
+import ClubRepository from '../../db/repositories/club.repository';
+import MemberRepository from '../../db/repositories/member.repository';
 
 class MemberController {
     static async getMembersByClubId(req: Request, res: Response) {
         try {
             const clubId: ClubAttributes['id'] = res.locals.clubId;
 
-            const members = await MemberService.getMembersByClubId(clubId);
+            const members = await MemberRepository.getMembersByClubId(clubId);
 
             res.json(members);
         } catch (error) {
@@ -29,7 +29,7 @@ class MemberController {
         };
 
         try {
-            const member = await MemberService.createMember(payload);
+            const member = await MemberRepository.createMember(payload);
 
             res.status(201).json(member);
         } catch (error) {
@@ -47,7 +47,7 @@ class MemberController {
                 return res.status(401).json({ errorMessage: 'Unauthorized' });
             }
 
-            await MemberService.updateMember({ id: member.id, ...req.body });
+            await MemberRepository.updateMember({ id: member.id, ...req.body });
 
             res.json({ message: 'Member updated' });
         } catch (error) {
@@ -74,15 +74,15 @@ class MemberController {
 
             // If the member is the only admin, delete the club
             // The requesting user will always be the last admin in this case
-            const members = await MemberService.getMembersByClubId(clubId);
+            const members = await MemberRepository.getMembersByClubId(clubId);
 
             if (members.length === 1 && members[0].isAdmin === member.isAdmin) {
-                await ClubService.deleteClub(clubId);
+                await ClubRepository.deleteClub(clubId);
 
                 return res.json({ message: 'Club deleted' });
             }
 
-            await MemberService.deleteMember(memberId);
+            await MemberRepository.deleteMember(memberId);
 
             res.json({ message: 'Member deleted' });
         } catch (error) {
