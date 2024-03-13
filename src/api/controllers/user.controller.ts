@@ -1,18 +1,15 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
 import { CreationUserAttributes, UserAttributes } from '../../types/user';
-import UserRepository from '../../db/repositories/user.repository';
+import UserHandler from '../handlers/user.handler';
 
 class UserController {
     static async registerUser(req: Request, res: Response) {
         try {
             const payload: CreationUserAttributes = req.body;
 
-            const user = await UserRepository.registerUser(payload);
+            const userData = await UserHandler.registerUser(payload);
 
-            const { id, firstName, lastName, email } = user;
-
-            res.status(201).json({ id, firstName, lastName, email });
+            res.status(201).json(userData);
         } catch (error) {
             console.log(error);
 
@@ -25,10 +22,7 @@ class UserController {
             const user: UserAttributes= res.locals.user;
 
             // Sign token with user data
-            const token = jwt.sign({
-                email: user.email,
-                userId: user.id
-            }, 'secret');
+            const token = await UserHandler.loginUser(user);
 
             res.status(200).json({ token });
         } catch (error) {

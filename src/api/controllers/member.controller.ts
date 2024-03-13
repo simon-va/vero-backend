@@ -3,15 +3,16 @@ import { ClubAttributes } from '../../types/club';
 import { CreationMemberAttributes, MemberAttributes } from '../../types/member';
 import ClubRepository from '../../db/repositories/club.repository';
 import MemberRepository from '../../db/repositories/member.repository';
+import MemberHandler from '../handlers/member.handler';
 
 class MemberController {
     static async getMembersByClubId(req: Request, res: Response) {
         try {
             const clubId: ClubAttributes['id'] = res.locals.clubId;
 
-            const members = await MemberRepository.getMembersByClubId(clubId);
+            const members = await MemberHandler.getMembersByClubId({ clubId });
 
-            res.json(members);
+            res.status(200).json(members);
         } catch (error) {
             console.error(error);
 
@@ -25,11 +26,14 @@ class MemberController {
             lastName: req.body.lastName,
             isAdmin: req.body.isAdmin || false,
             clubId: res.locals.clubId,
-            email: req.body.email || '',
+            email: req.body.email || ''
         };
 
         try {
-            const member = await MemberRepository.createMember(payload);
+            const member = await MemberHandler.createMember({
+                clubId: res.locals.clubId,
+                body: payload
+            });
 
             res.status(201).json(member);
         } catch (error) {
@@ -43,11 +47,14 @@ class MemberController {
         try {
             const member: MemberAttributes = res.locals.member;
 
-            if (!member.isAdmin) {
-                return res.status(401).json({ errorMessage: 'Unauthorized' });
-            }
+            const response = await MemberHandler.updateMember({
+                body: req.body,
+                member
+            });
 
-            await MemberRepository.updateMember({ id: member.id, ...req.body });
+            if (response && response.errorMessage) {
+                return res.status(401).json({ errorMessage: response.errorMessage });
+            }
 
             res.json({ message: 'Member updated' });
         } catch (error) {
@@ -61,30 +68,19 @@ class MemberController {
         try {
             const clubId: ClubAttributes['id'] = res.locals.clubId;
             const member: MemberAttributes = res.locals.member;
-
-            if (!member.isAdmin) {
-                return res.status(401).json({ errorMessage: 'Unauthorized' });
-            }
-
             const memberId: MemberAttributes['id'] = Number(req.params.memberId);
 
-            if (!memberId) {
-                return res.status(400).json({ errorMessage: 'Provide a memberId in params' });
+            const response = await MemberHandler.deleteMember({
+                clubId,
+                member,
+                memberIdToDelete: memberId
+            });
+
+            if (response && response.errorMessage) {
+                return res.status(401).json({ errorMessage: response.errorMessage });
             }
 
-            // If the member is the only admin, delete the club
-            // The requesting user will always be the last admin in this case
-            const members = await MemberRepository.getMembersByClubId(clubId);
-
-            if (members.length === 1 && members[0].isAdmin === member.isAdmin) {
-                await ClubRepository.deleteClub(clubId);
-
-                return res.json({ message: 'Club deleted' });
-            }
-
-            await MemberRepository.deleteMember(memberId);
-
-            res.json({ message: 'Member deleted' });
+            res.json({ message: response.message });
         } catch (error) {
             console.error(error);
 

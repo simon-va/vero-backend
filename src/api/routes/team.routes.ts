@@ -5,8 +5,8 @@ import TeamMiddleware from '../middlewares/team.middleware';
 
 const router = Router();
 
-router.post('/:clubId/teams', AuthMiddleware.verifyTokenWithMember, TeamMiddleware.validateTeamCreation, TeamController.addTeam);
+router.post('/:clubId/teams', AuthMiddleware.verifyTokenWithMember, TeamMiddleware.validateTeamCreation, TeamController.createTeam);
 router.post('/:clubId/teams/:teamId/members/:memberId', AuthMiddleware.verifyTokenWithMember, TeamController.addMemberToTeam);
-router.delete('/:clubId/teams/:teamId/members/:memberId', AuthMiddleware.verifyTokenWithMember, TeamController.deleteMemberFromTeam);
+router.delete('/:clubId/teams/:teamId/members/:memberId', AuthMiddleware.verifyTokenWithMember, TeamController.removeMemberFromTeam);
 
 export default router;

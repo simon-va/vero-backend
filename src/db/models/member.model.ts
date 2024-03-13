@@ -80,15 +80,4 @@ Member.init({
     tableName: 'members'
 });
 
-Member.belongsTo(Club, {
-    foreignKey: 'clubId',
-    as: 'club'
-});
-
-Member.belongsToMany(Team, {
-    through: Member2Team,
-    foreignKey: 'memberId',
-    otherKey: 'teamId'
-});
-
 export default Member;

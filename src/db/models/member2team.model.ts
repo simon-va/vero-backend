@@ -34,4 +34,16 @@ Member2Team.init({
     tableName: 'Member2Team'
 });
 
+Member.belongsToMany(Team, {
+    through: Member2Team,
+    foreignKey: 'memberId',
+    otherKey: 'teamId'
+});
+
+Team.belongsToMany(Member, {
+    through: Member2Team,
+    foreignKey: 'teamId',
+    otherKey: 'memberId'
+});
+
 export default Member2Team;
