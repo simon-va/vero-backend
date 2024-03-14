@@ -20,7 +20,10 @@ class UserService {
         return { id, firstName, lastName, email };
     }
 
-    static async loginUser({ email, password }: Pick<UserAttributes, 'email' | 'password'>) {
+    static async loginUser({
+        email,
+        password
+    }: Pick<UserAttributes, 'email' | 'password'>) {
         const user = await UserRepository.getUserByEmail(email);
 
         if (!user) {
@@ -33,10 +36,13 @@ class UserService {
             throw new Error400('Invalid email or password');
         }
 
-        return jwt.sign({
-            email,
-            userId: user.id
-        }, 'secret');
+        return jwt.sign(
+            {
+                email,
+                userId: user.id
+            },
+            'secret'
+        );
     }
 }
 

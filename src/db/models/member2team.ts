@@ -1,4 +1,10 @@
-import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
+import {
+    Model,
+    DataTypes,
+    InferAttributes,
+    InferCreationAttributes,
+    CreationOptional
+} from 'sequelize';
 import sequelize from '../config';
 import Member from './member';
 import Team from './team';
@@ -17,22 +23,25 @@ class Member2Team extends Model<
     declare updatedAt: CreationOptional<Date>;
 }
 
-Member2Team.init({
-    memberId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+Member2Team.init(
+    {
+        memberId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        teamId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        createdAt: DataTypes.DATE,
+        updatedAt: DataTypes.DATE
     },
-    teamId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
-}, {
-    timestamps: true,
-    sequelize: sequelize,
-    tableName: 'Member2Team'
-});
+    {
+        timestamps: true,
+        sequelize: sequelize,
+        tableName: 'Member2Team'
+    }
+);
 
 Member.belongsToMany(Team, {
     through: Member2Team,

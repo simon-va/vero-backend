@@ -4,7 +4,11 @@ import { CreationMemberAttributes, MemberAttributes } from '../../types/member';
 import MemberService from '../services/memberService';
 
 class MemberController {
-    static async getMembersByClubId(req: Request, res: Response, next: NextFunction) {
+    static async getMembersByClubId(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         const clubId: ClubAttributes['id'] = Number(req.params.clubId);
 
         try {

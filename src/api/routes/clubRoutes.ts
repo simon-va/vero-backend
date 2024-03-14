@@ -1,7 +1,11 @@
 import { Router } from 'express';
 import { auth, AuthType } from '../middlewares/auth';
 import ClubController from '../controllers/clubController';
-import { ParamValue, validateBody, validateParams } from '../middlewares/validate';
+import {
+    ParamValue,
+    validateBody,
+    validateParams
+} from '../middlewares/validate';
 
 const router = Router();
 
@@ -10,10 +14,24 @@ const createClubBodySchema = {
         required: true,
         type: 'string'
     }
-}
+};
 
-router.get('', auth([AuthType.NoMember, AuthType.User]), ClubController.getClubsByUserId);
-router.post('', validateBody(createClubBodySchema), auth([AuthType.NoMember, AuthType.User]), ClubController.createClub);
-router.delete('/:clubId', validateParams([ParamValue.ClubId]), auth([AuthType.IsAdmin]), ClubController.deleteClub);
+router.get(
+    '',
+    auth([AuthType.NoMember, AuthType.User]),
+    ClubController.getClubsByUserId
+);
+router.post(
+    '',
+    validateBody(createClubBodySchema),
+    auth([AuthType.NoMember, AuthType.User]),
+    ClubController.createClub
+);
+router.delete(
+    '/:clubId',
+    validateParams([ParamValue.ClubId]),
+    auth([AuthType.IsAdmin]),
+    ClubController.deleteClub
+);
 
 export default router;

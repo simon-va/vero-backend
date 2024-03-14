@@ -1,4 +1,7 @@
-import { CreationMemberAttributes, UpdateMemberPayload } from '../../types/member';
+import {
+    CreationMemberAttributes,
+    UpdateMemberPayload
+} from '../../types/member';
 import Member from '../models/member';
 import { UserAttributes } from '../../types/user';
 import { ClubAttributes } from '../../types/club';
@@ -12,7 +15,10 @@ class MemberRepository {
         await Member.update(payload, { where: { id: payload.id } });
     }
 
-    static async getMemberByUserAndClubId(userId: UserAttributes['id'], clubId: ClubAttributes['id']) {
+    static async getMemberByUserAndClubId(
+        userId: UserAttributes['id'],
+        clubId: ClubAttributes['id']
+    ) {
         return await Member.findOne({ where: { userId, clubId } });
     }
 

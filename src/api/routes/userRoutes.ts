@@ -33,7 +33,15 @@ const loginUserBodySchema = {
     }
 };
 
-router.post('/register', validateBody(registerUserBodySchema), UserController.registerUser);
-router.post('/login', validateBody(loginUserBodySchema), UserController.loginUser);
+router.post(
+    '/register',
+    validateBody(registerUserBodySchema),
+    UserController.registerUser
+);
+router.post(
+    '/login',
+    validateBody(loginUserBodySchema),
+    UserController.loginUser
+);
 
 export default router;

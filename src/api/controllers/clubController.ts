@@ -20,7 +20,11 @@ class ClubController {
         }
     }
 
-    static async getClubsByUserId(req: Request, res: Response, next: NextFunction) {
+    static async getClubsByUserId(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         const { id }: UserAttributes = res.locals.user;
 
         try {

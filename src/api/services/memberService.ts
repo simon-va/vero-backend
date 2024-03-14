@@ -13,7 +13,9 @@ interface CreateMemberPayload {
     clubId: ClubAttributes['id'];
 }
 
-type UpdateMemberPayload = Partial<MemberAttributes> & { id: MemberAttributes['id'] };
+type UpdateMemberPayload = Partial<MemberAttributes> & {
+    id: MemberAttributes['id'];
+};
 
 interface DeleteMemberPayload {
     clubId: ClubAttributes['id'];
@@ -41,10 +43,13 @@ class MemberService {
         await MemberRepository.updateMember(payload);
     }
 
-    static async deleteMember({ memberIdToDelete, clubId }: DeleteMemberPayload) {
+    static async deleteMember({
+        memberIdToDelete,
+        clubId
+    }: DeleteMemberPayload) {
         const members = await MemberRepository.getMembersByClubId(clubId);
 
-        if (!members.some(member => member.id === memberIdToDelete)) {
+        if (!members.some((member) => member.id === memberIdToDelete)) {
             throw new BaseError('Member does not exist', 404, true);
         }
 

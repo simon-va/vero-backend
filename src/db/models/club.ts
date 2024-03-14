@@ -11,10 +11,7 @@ import sequelize from '../config';
 import Member from './member';
 import Team from './team';
 
-class Club extends Model<
-    InferAttributes<Club>,
-    InferCreationAttributes<Club>
-> {
+class Club extends Model<InferAttributes<Club>, InferCreationAttributes<Club>> {
     // id can be undefined during creation when using `autoIncrement`
     declare id: CreationOptional<number>;
     declare name: string;
@@ -35,23 +32,26 @@ class Club extends Model<
     };
 }
 
-Club.init({
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+Club.init(
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        createdAt: DataTypes.DATE,
+        updatedAt: DataTypes.DATE
     },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
-}, {
-    timestamps: true,
-    sequelize: sequelize,
-    modelName: 'club'
-});
+    {
+        timestamps: true,
+        sequelize: sequelize,
+        modelName: 'club'
+    }
+);
 
 Club.hasMany(Member, {
     foreignKey: 'clubId',

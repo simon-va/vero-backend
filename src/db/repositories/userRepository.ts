@@ -32,15 +32,19 @@ class UserRepository {
 
     static async getClubsByUserId(userId: UserAttributes['id']) {
         const user = await User.findByPk(userId, {
-            include: [{
-                model: Member,
-                as: 'members',
-                include: [{
-                    model: Club,
-                    as: 'club',
-                    attributes: ['id', 'name']
-                }]
-            }]
+            include: [
+                {
+                    model: Member,
+                    as: 'members',
+                    include: [
+                        {
+                            model: Club,
+                            as: 'club',
+                            attributes: ['id', 'name']
+                        }
+                    ]
+                }
+            ]
         });
 
         if (!user) {

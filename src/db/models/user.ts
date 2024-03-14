@@ -10,10 +10,7 @@ import {
 import sequelize from '../config';
 import Member from './member';
 
-class User extends Model<
-    InferAttributes<User>,
-    InferCreationAttributes<User>
-> {
+class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     // id can be undefined during creation when using `autoIncrement`
     declare id: CreationOptional<number>;
     declare firstName: string;
@@ -35,36 +32,39 @@ class User extends Model<
     };
 }
 
-User.init({
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+User.init(
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
+        firstName: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        lastName: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true
+        },
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        createdAt: DataTypes.DATE,
+        updatedAt: DataTypes.DATE
     },
-    firstName: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    lastName: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
-}, {
-    timestamps: true,
-    sequelize: sequelize,
-    tableName: 'users'
-});
+    {
+        timestamps: true,
+        sequelize: sequelize,
+        tableName: 'users'
+    }
+);
 
 User.hasMany(Member, {
     foreignKey: 'userId',

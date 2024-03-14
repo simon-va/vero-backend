@@ -21,7 +21,11 @@ class TeamController {
         }
     }
 
-    static async addMemberToTeam(req: Request, res: Response, next: NextFunction) {
+    static async addMemberToTeam(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         const teamId = Number(req.params.teamId);
         const member: MemberAttributes = res.locals.member;
 
@@ -37,7 +41,11 @@ class TeamController {
         }
     }
 
-    static async removeMemberFromTeam(req: Request, res: Response, next: NextFunction) {
+    static async removeMemberFromTeam(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         const teamId = Number(req.params.teamId);
         const member: MemberAttributes = res.locals.member;
 

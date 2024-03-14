@@ -42,7 +42,10 @@ class TeamService {
         await TeamRepository.addMemberToTeam(teamId, member.id);
     }
 
-    static async removeMemberFromTeam({ memberId, teamId }: RemoveMemberFromTeamPayload) {
+    static async removeMemberFromTeam({
+        memberId,
+        teamId
+    }: RemoveMemberFromTeamPayload) {
         await TeamRepository.removeMemberFromTeam(teamId, memberId);
     }
 }

@@ -39,43 +39,46 @@ class Member extends Model<
     };
 }
 
-Member.init({
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+Member.init(
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
+        firstName: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        lastName: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        userId: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
+        clubId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        email: {
+            type: DataTypes.STRING,
+            defaultValue: ''
+        },
+        isAdmin: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },
+        createdAt: DataTypes.DATE,
+        updatedAt: DataTypes.DATE
     },
-    firstName: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    lastName: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    userId: {
-        type: DataTypes.INTEGER,
-        allowNull: true
-    },
-    clubId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    email: {
-        type: DataTypes.STRING,
-        defaultValue: ''
-    },
-    isAdmin: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
-    },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
-}, {
-    timestamps: true,
-    sequelize: sequelize,
-    tableName: 'members'
-});
+    {
+        timestamps: true,
+        sequelize: sequelize,
+        tableName: 'members'
+    }
+);
 
 export default Member;

@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import Validator, { ValidationError, ValidationSchema } from 'fastest-validator';
+import Validator, {
+    ValidationError,
+    ValidationSchema
+} from 'fastest-validator';
 
 export const validateBody = (schema: any) => {
     return (req: Request, res: Response, next: NextFunction) => {
@@ -9,7 +12,8 @@ export const validateBody = (schema: any) => {
 
         if (error !== true) {
             return res.status(400).json({
-                errorMessage: 'Validation failed - provide correct data in body',
+                errorMessage:
+                    'Validation failed - provide correct data in body',
                 errors: error.map((err) => err.message)
             });
         }
@@ -38,7 +42,9 @@ export const validateParams = (paramValues: ParamValue[] = []) => {
 
         const v = new Validator();
 
-        const error = v.validate(req.params, schema) as true | ValidationError[];
+        const error = v.validate(req.params, schema) as
+            | true
+            | ValidationError[];
 
         if (error !== true) {
             res.status(400).json({

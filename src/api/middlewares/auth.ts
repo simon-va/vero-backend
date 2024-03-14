@@ -23,14 +23,21 @@ export const auth = (types: AuthType[] = []) => {
             const accessToken = req.headers['authorization']?.split(' ')[1];
 
             if (!accessToken) {
-                return res.status(401).json({ errorMessage: 'AccessToken not found' });
+                return res
+                    .status(401)
+                    .json({ errorMessage: 'AccessToken not found' });
             }
 
             try {
-                const decoded = jwt.verify(accessToken, 'secret') as AccessTokenPayload;
+                const decoded = jwt.verify(
+                    accessToken,
+                    'secret'
+                ) as AccessTokenPayload;
 
                 if (!decoded) {
-                    return res.status(401).json({ errorMessage: 'Invalid token - Token expired' });
+                    return res.status(401).json({
+                        errorMessage: 'Invalid token - Token expired'
+                    });
                 }
 
                 res.locals.userId = decoded.userId;
@@ -53,11 +60,17 @@ export const auth = (types: AuthType[] = []) => {
             res.locals.user = user;
         }
 
-        if (!types.includes(AuthType.NoMember) || types.includes(AuthType.IsAdmin)) {
+        if (
+            !types.includes(AuthType.NoMember) ||
+            types.includes(AuthType.IsAdmin)
+        ) {
             const clubId = Number(req.params.clubId);
             const userId: UserAttributes['id'] = res.locals.userId;
 
-            const member = await MemberRepository.getMemberByUserAndClubId(userId, clubId);
+            const member = await MemberRepository.getMemberByUserAndClubId(
+                userId,
+                clubId
+            );
 
             if (!member) {
                 return res.status(401).json({ errorMessage: 'Unauthorized' });

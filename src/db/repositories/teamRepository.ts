@@ -8,14 +8,20 @@ class TeamRepository {
         return await Team.create(payload);
     }
 
-    static async addMemberToTeam(teamId: TeamAttributes['id'], memberId: MemberAttributes['id']) {
+    static async addMemberToTeam(
+        teamId: TeamAttributes['id'],
+        memberId: MemberAttributes['id']
+    ) {
         return await Member2Team.create({
             teamId,
             memberId
         });
     }
 
-    static async removeMemberFromTeam(teamId: TeamAttributes['id'], memberId: MemberAttributes['id']): Promise<void> {
+    static async removeMemberFromTeam(
+        teamId: TeamAttributes['id'],
+        memberId: MemberAttributes['id']
+    ): Promise<void> {
         await Member2Team.destroy({
             where: {
                 teamId,
