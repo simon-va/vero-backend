@@ -2,9 +2,17 @@ import { CreationUserAttributes, LoginUserBody, UserAttributes } from '../../typ
 import UserRepository from '../../db/repositories/userRepository';
 import jwt from 'jsonwebtoken';
 import bcryptjs from 'bcryptjs';
+import BaseError from '../../errors/BaseError';
+import Error400 from '../../errors/Error400';
 
 class UserService {
     static async registerUser(payload: CreationUserAttributes) {
+        const userExists = await UserRepository.getUserByEmail(payload.email);
+
+        if (userExists) {
+            throw new BaseError('Email already in use', 409, true);
+        }
+
         const user = await UserRepository.registerUser(payload);
 
         const { id, firstName, lastName, email } = user;
@@ -13,18 +21,16 @@ class UserService {
     }
 
     static async loginUser({ email, password }: Pick<UserAttributes, 'email' | 'password'>) {
-        // Check if user exists
         const user = await UserRepository.getUserByEmail(email);
 
         if (!user) {
-            return { errorMessage: 'Invalid email or password' };
+            throw new Error400('Invalid email or password');
         }
 
-        // Check if password is valid
         const hasValidPassword = bcryptjs.compareSync(password, user.password);
 
         if (!hasValidPassword) {
-            return { errorMessage: 'Invalid email or password' };
+            throw new Error400('Invalid email or password');
         }
 
         return jwt.sign({

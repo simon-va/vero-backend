@@ -11,7 +11,6 @@ interface CreateClubPayload {
 }
 
 interface DeleteClubPayload {
-    member: MemberAttributes;
     clubId: ClubAttributes['id'];
 }
 
@@ -36,14 +35,8 @@ class ClubService {
         return await UserRepository.getClubsByUserId(userId);
     }
 
-    static async deleteClub({ clubId, member }: DeleteClubPayload) {
-        if (!member.isAdmin) {
-            return { errorMessage: 'You are not authorized to delete this club' };
-        }
-
+    static async deleteClub({ clubId }: DeleteClubPayload) {
         await ClubRepository.deleteClub(clubId);
-
-        return { message: 'Club deleted successfully' };
     }
 }
 

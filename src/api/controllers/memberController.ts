@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { ClubAttributes } from '../../types/club';
 import { CreationMemberAttributes, MemberAttributes } from '../../types/member';
 import ClubRepository from '../../db/repositories/clubRepository';
@@ -6,85 +6,68 @@ import MemberRepository from '../../db/repositories/memberRepository';
 import MemberService from '../services/memberService';
 
 class MemberController {
-    static async getMembersByClubId(req: Request, res: Response) {
-        try {
-            const clubId: ClubAttributes['id'] = res.locals.clubId;
+    static async getMembersByClubId(req: Request, res: Response, next: NextFunction) {
+        const clubId: ClubAttributes['id'] = Number(req.params.clubId);
 
+        try {
             const members = await MemberService.getMembersByClubId({ clubId });
 
-            res.status(200).json(members);
+            res.status(200).send(members);
         } catch (error) {
-            console.error(error);
-
-            res.status(500).json({ errorMessage: 'Internal server error' });
+            next(error);
         }
     }
 
-    static async createMember(req: Request, res: Response) {
+    static async createMember(req: Request, res: Response, next: NextFunction) {
+        const clubId: ClubAttributes['id'] = Number(req.params.clubId);
+
         const payload: CreationMemberAttributes = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             isAdmin: req.body.isAdmin || false,
-            clubId: res.locals.clubId,
+            clubId,
             email: req.body.email || ''
         };
 
         try {
             const member = await MemberService.createMember({
-                clubId: res.locals.clubId,
+                clubId,
                 body: payload
             });
 
-            res.status(201).json(member);
+            res.status(201).send(member);
         } catch (error) {
-            console.error(error);
-
-            res.status(500).json({ errorMessage: 'Internal server error' });
+            next(error);
         }
     }
 
-    static async updateMember(req: Request, res: Response) {
+    static async updateMember(req: Request, res: Response, next: NextFunction) {
+        const memberId: MemberAttributes['id'] = Number(req.params.memberId);
         try {
-            const member: MemberAttributes = res.locals.member;
-
-            const response = await MemberService.updateMember({
-                body: req.body,
-                member
+            await MemberService.updateMember({
+                id: memberId,
+                ...req.body
             });
 
-            if (response && response.errorMessage) {
-                return res.status(401).json({ errorMessage: response.errorMessage });
-            }
-
-            res.json({ message: 'Member updated' });
+            res.send({ message: 'Member updated' });
         } catch (error) {
-            console.error(error);
-
-            res.status(500).json({ errorMessage: 'Internal server error' });
+            next(error);
         }
     }
 
-    static async deleteMember(req: Request, res: Response) {
-        try {
-            const clubId: ClubAttributes['id'] = res.locals.clubId;
-            const member: MemberAttributes = res.locals.member;
-            const memberId: MemberAttributes['id'] = Number(req.params.memberId);
+    static async deleteMember(req: Request, res: Response, next: NextFunction) {
+        const clubId: ClubAttributes['id'] = Number(req.params.clubId);
+        const memberId: MemberAttributes['id'] = Number(req.params.memberId);
 
-            const response = await MemberService.deleteMember({
+        try {
+            await MemberService.deleteMember({
                 clubId,
-                member,
                 memberIdToDelete: memberId
             });
 
-            if (response && response.errorMessage) {
-                return res.status(401).json({ errorMessage: response.errorMessage });
-            }
-
-            res.json({ message: response.message });
+            res.status(204).send();
         } catch (error) {
-            console.error(error);
-
-            res.status(500).json({ errorMessage: 'Internal server error' });
+            next(error);
         }
     }
 }

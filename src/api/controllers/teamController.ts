@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { ClubAttributes } from '../../types/club';
 import { CreationTeamAttributes } from '../../types/team';
 import { MemberAttributes } from '../../types/member';
@@ -6,11 +6,11 @@ import TeamRepository from '../../db/repositories/teamRepository';
 import TeamService from '../services/teamService';
 
 class TeamController {
-    static async createTeam(req: Request, res: Response) {
-        try {
-            const clubId: ClubAttributes['id'] = res.locals.clubId;
-            const body: CreationTeamAttributes = req.body;
+    static async createTeam(req: Request, res: Response, next: NextFunction) {
+        const clubId: ClubAttributes['id'] = Number(req.params.clubId);
+        const body: CreationTeamAttributes = req.body;
 
+        try {
             const team = await TeamService.createTeam({
                 clubId,
                 teamPayload: body
@@ -18,51 +18,39 @@ class TeamController {
 
             res.status(201).send(team);
         } catch (error) {
-            res.status(500).send({ errorMessage: 'Internal server error' });
+            next(error);
         }
     }
 
-    static async addMemberToTeam(req: Request, res: Response) {
+    static async addMemberToTeam(req: Request, res: Response, next: NextFunction) {
         const teamId = Number(req.params.teamId);
         const member: MemberAttributes = res.locals.member;
 
         try {
-            const response = await TeamService.addMemberToTeam({
+            await TeamService.addMemberToTeam({
                 teamId,
                 member
             });
 
-            if (response && 'errorMessage' in response) {
-                return res.status(400).send({ errorMessage: response.errorMessage });
-            }
-
-            return res.status(201).send();
+            res.status(201).send();
         } catch (error) {
-            console.log(error);
-
-            res.status(500).send({ errorMessage: 'Internal server error' });
+            next(error);
         }
     }
 
-    static async removeMemberFromTeam(req: Request, res: Response) {
+    static async removeMemberFromTeam(req: Request, res: Response, next: NextFunction) {
         const teamId = Number(req.params.teamId);
         const member: MemberAttributes = res.locals.member;
 
         try {
-            const response = await TeamService.removeMemberFromTeam({
+            await TeamService.removeMemberFromTeam({
                 teamId,
                 memberId: member.id
             });
 
-            if (response && 'errorMessage' in response) {
-                return res.status(400).send({ errorMessage: response.errorMessage });
-            }
-
-            return res.status(200).send();
+            res.status(200).send();
         } catch (error) {
-            console.log(error);
-
-            res.status(500).send({ errorMessage: 'Internal server error' });
+            next(error);
         }
     }
 }

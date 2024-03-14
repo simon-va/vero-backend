@@ -4,6 +4,7 @@ import TeamRepository from '../../db/repositories/teamRepository';
 import { MemberAttributes } from '../../types/member';
 import Member2Team from '../../db/models/member2team';
 import Member2teamRepository from '../../db/repositories/member2teamRepository';
+import BaseError from '../../errors/BaseError';
 
 interface CreateTeamPayload {
     clubId: ClubAttributes['id'];
@@ -29,10 +30,6 @@ class TeamService {
     }
 
     static async addMemberToTeam({ member, teamId }: AddMemberToTeamPayload) {
-        if (!teamId) {
-            return { errorMessage: 'Missing valid TeamId' };
-        }
-
         // check, if member is already in team
         const entry = await Member2teamRepository.getMemberInTeam({
             teamId,
@@ -40,17 +37,13 @@ class TeamService {
         });
 
         if (entry) {
-            return { errorMessage: 'Member is already in team' };
+            throw new BaseError('Member is already in team', 409, true);
         }
 
         await TeamRepository.addMemberToTeam(teamId, member.id);
     }
 
     static async removeMemberFromTeam({ memberId, teamId }: RemoveMemberFromTeamPayload) {
-        if (!teamId) {
-            return { errorMessage: 'Missing valid TeamId' };
-        }
-
         await TeamRepository.removeMemberFromTeam(teamId, memberId);
     }
 }

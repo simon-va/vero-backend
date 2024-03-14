@@ -22,6 +22,7 @@ class MemberRepository {
             attributes: ['id', 'firstName', 'lastName', 'email', 'isAdmin']
         });
     }
+
     static async deleteMember(memberId: Member['id']) {
         await Member.destroy({ where: { id: memberId } });
     }

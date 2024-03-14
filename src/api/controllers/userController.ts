@@ -1,34 +1,27 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { CreationUserAttributes, UserAttributes } from '../../types/user';
 import UserService from '../services/userService';
 
 class UserController {
-    static async registerUser(req: Request, res: Response) {
+    static async registerUser(req: Request, res: Response, next: NextFunction) {
+        const payload: CreationUserAttributes = req.body;
+
         try {
-            const payload: CreationUserAttributes = req.body;
+            const user = await UserService.registerUser(payload);
 
-            const userData = await UserService.registerUser(payload);
-
-            res.status(201).json(userData);
+            res.status(201).send(user);
         } catch (error) {
-            console.log(error);
-
-            res.status(500).json({ errorMessage: 'Internal server error' });
+            next(error);
         }
     }
 
-    static async loginUser(req: Request, res: Response) {
+    static async loginUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const user: UserAttributes= res.locals.user;
+            const token = await UserService.loginUser(req.body);
 
-            // Sign token with user data
-            const token = await UserService.loginUser(user);
-
-            res.status(200).json({ token });
+            res.status(200).send({ token });
         } catch (error) {
-            console.log(error);
-
-            res.status(500).json({ errorMessage: 'Internal server error' });
+            next(error);
         }
     }
 }

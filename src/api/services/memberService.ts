@@ -2,6 +2,7 @@ import { ClubAttributes } from '../../types/club';
 import MemberRepository from '../../db/repositories/memberRepository';
 import { CreationMemberAttributes, MemberAttributes } from '../../types/member';
 import ClubRepository from '../../db/repositories/clubRepository';
+import BaseError from '../../errors/BaseError';
 
 interface GetMembersByClubIdPayload {
     clubId: ClubAttributes['id'];
@@ -12,14 +13,10 @@ interface CreateMemberPayload {
     clubId: ClubAttributes['id'];
 }
 
-interface UpdateMemberPayload {
-    body: CreationMemberAttributes;
-    member: MemberAttributes;
-}
+type UpdateMemberPayload = Partial<MemberAttributes> & { id: MemberAttributes['id'] };
 
 interface DeleteMemberPayload {
     clubId: ClubAttributes['id'];
-    member: MemberAttributes;
     memberIdToDelete: MemberAttributes['id'];
 }
 
@@ -40,36 +37,22 @@ class MemberService {
         return await MemberRepository.createMember(payload);
     }
 
-    static async updateMember({ body, member }: UpdateMemberPayload) {
-        if (!member.isAdmin) {
-            return { errorMessage: 'Unauthorized' };
-        }
-
-        await MemberRepository.updateMember({ id: member.id, ...body });
+    static async updateMember(payload: UpdateMemberPayload) {
+        await MemberRepository.updateMember(payload);
     }
 
-    static async deleteMember({ memberIdToDelete, member, clubId }: DeleteMemberPayload) {
-        if (!member.isAdmin) {
-            return { errorMessage: 'Unauthorized' };
-        }
-
-        if (!memberIdToDelete) {
-            return { errorMessage: 'Member not found' };
-        }
-
-        // If the member is the only admin, delete the club
-        // The requesting user will always be the last admin in this case
+    static async deleteMember({ memberIdToDelete, clubId }: DeleteMemberPayload) {
         const members = await MemberRepository.getMembersByClubId(clubId);
 
-        if (members.length === 1 && members[0].isAdmin === member.isAdmin) {
-            await ClubRepository.deleteClub(clubId);
+        if (!members.some(member => member.id === memberIdToDelete)) {
+            throw new BaseError('Member does not exist', 404, true);
+        }
 
-            return { message: 'Club deleted' };
+        if (members.length === 1) {
+            await ClubRepository.deleteClub(clubId);
         }
 
         await MemberRepository.deleteMember(memberIdToDelete);
-
-        return { message: 'Member deleted' };
     }
 }
 
