@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { auth, AuthType } from '../middlewares/auth';
 import ClubController from '../controllers/clubController';
+import { auth, AuthType } from '../middlewares/auth';
 import {
     ParamValue,
     validateBody,
