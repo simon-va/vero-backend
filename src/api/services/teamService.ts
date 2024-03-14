@@ -2,7 +2,6 @@ import { ClubAttributes } from '../../types/club';
 import { CreationTeamAttributes, TeamAttributes } from '../../types/team';
 import TeamRepository from '../../db/repositories/teamRepository';
 import { MemberAttributes } from '../../types/member';
-import Member2Team from '../../db/models/member2team';
 import Member2teamRepository from '../../db/repositories/member2teamRepository';
 import BaseError from '../../errors/BaseError';
 

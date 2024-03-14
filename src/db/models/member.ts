@@ -11,8 +11,6 @@ import {
 import sequelize from '../config';
 import User from './user';
 import Club from './club';
-import Team from './team';
-import Member2Team from './member2team';
 
 class Member extends Model<
     InferAttributes<Member>,

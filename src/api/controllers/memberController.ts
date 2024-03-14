@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { ClubAttributes } from '../../types/club';
 import { CreationMemberAttributes, MemberAttributes } from '../../types/member';
-import ClubRepository from '../../db/repositories/clubRepository';
-import MemberRepository from '../../db/repositories/memberRepository';
 import MemberService from '../services/memberService';
 
 class MemberController {

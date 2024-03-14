@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { CreationUserAttributes, UserAttributes } from '../../types/user';
+import { CreationUserAttributes } from '../../types/user';
 import UserService from '../services/userService';
 
 class UserController {

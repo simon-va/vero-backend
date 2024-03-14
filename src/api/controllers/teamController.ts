@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { ClubAttributes } from '../../types/club';
 import { CreationTeamAttributes } from '../../types/team';
 import { MemberAttributes } from '../../types/member';
-import TeamRepository from '../../db/repositories/teamRepository';
 import TeamService from '../services/teamService';
 
 class TeamController {

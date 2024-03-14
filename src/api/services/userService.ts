@@ -1,4 +1,4 @@
-import { CreationUserAttributes, LoginUserBody, UserAttributes } from '../../types/user';
+import { CreationUserAttributes, UserAttributes } from '../../types/user';
 import UserRepository from '../../db/repositories/userRepository';
 import jwt from 'jsonwebtoken';
 import bcryptjs from 'bcryptjs';

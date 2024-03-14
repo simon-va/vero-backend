@@ -3,7 +3,6 @@ import { UserAttributes } from '../../types/user';
 import ClubRepository from '../../db/repositories/clubRepository';
 import MemberRepository from '../../db/repositories/memberRepository';
 import UserRepository from '../../db/repositories/userRepository';
-import { MemberAttributes } from '../../types/member';
 
 interface CreateClubPayload {
     clubPayload: CreationClubAttributes;

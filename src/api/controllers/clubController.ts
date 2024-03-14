@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { CreationClubAttributes } from '../../types/club';
 import { UserAttributes } from '../../types/user';
-import { MemberAttributes } from '../../types/member';
 import ClubService from '../services/clubService';
 
 class ClubController {
