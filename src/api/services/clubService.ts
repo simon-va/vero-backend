@@ -1,8 +1,8 @@
 import { ClubAttributes, CreationClubAttributes } from '../../types/club';
 import { UserAttributes } from '../../types/user';
-import ClubRepository from '../../db/repositories/club.repository';
-import MemberRepository from '../../db/repositories/member.repository';
-import UserRepository from '../../db/repositories/user.repository';
+import ClubRepository from '../../db/repositories/clubRepository';
+import MemberRepository from '../../db/repositories/memberRepository';
+import UserRepository from '../../db/repositories/userRepository';
 import { MemberAttributes } from '../../types/member';
 
 interface CreateClubPayload {
@@ -15,7 +15,7 @@ interface DeleteClubPayload {
     clubId: ClubAttributes['id'];
 }
 
-class ClubHandler {
+class ClubService {
     static async createClub({ user, clubPayload }: CreateClubPayload) {
         const club = await ClubRepository.createClub(clubPayload);
 
@@ -47,4 +47,4 @@ class ClubHandler {
     }
 }
 
-export default ClubHandler;
+export default ClubService;

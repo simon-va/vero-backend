@@ -1,7 +1,7 @@
 import { CreationTeamAttributes, TeamAttributes } from '../../types/team';
-import Team from '../models/team.model';
+import Team from '../models/team';
 import { MemberAttributes } from '../../types/member';
-import Member2Team from '../models/member2team.model';
+import Member2Team from '../models/member2team';
 
 class TeamRepository {
     static async createTeam(payload: CreationTeamAttributes) {

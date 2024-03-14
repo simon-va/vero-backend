@@ -1,7 +1,7 @@
 import { ClubAttributes } from '../../types/club';
-import MemberRepository from '../../db/repositories/member.repository';
+import MemberRepository from '../../db/repositories/memberRepository';
 import { CreationMemberAttributes, MemberAttributes } from '../../types/member';
-import ClubRepository from '../../db/repositories/club.repository';
+import ClubRepository from '../../db/repositories/clubRepository';
 
 interface GetMembersByClubIdPayload {
     clubId: ClubAttributes['id'];
@@ -23,7 +23,7 @@ interface DeleteMemberPayload {
     memberIdToDelete: MemberAttributes['id'];
 }
 
-class MemberHandler {
+class MemberService {
     static async getMembersByClubId({ clubId }: GetMembersByClubIdPayload) {
         return await MemberRepository.getMembersByClubId(clubId);
     }
@@ -73,4 +73,4 @@ class MemberHandler {
     }
 }
 
-export default MemberHandler;
+export default MemberService;

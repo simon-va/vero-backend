@@ -1,4 +1,4 @@
-import Club from '../models/club.model';
+import Club from '../models/club';
 import { ClubAttributes, CreationClubAttributes } from '../../types/club';
 
 class ClubRepository {

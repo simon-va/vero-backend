@@ -1,8 +1,8 @@
-import User from '../models/user.model';
+import User from '../models/user';
 import { CreationUserAttributes, UserAttributes } from '../../types/user';
 import bcryptjs from 'bcryptjs';
-import Member from '../models/member.model';
-import Club from '../models/club.model';
+import Member from '../models/member';
+import Club from '../models/club';
 
 class UserRepository {
     static async getUserByEmail(email: UserAttributes['email']) {

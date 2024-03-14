@@ -1,6 +1,6 @@
 import { Attributes, CreationAttributes } from 'sequelize';
-import Team from '../db/models/team.model';
-import Member2Team from '../db/models/member2team.model';
+import Team from '../db/models/team';
+import Member2Team from '../db/models/member2team';
 
 export type TeamAttributes = Attributes<Team>
 export type CreationTeamAttributes = CreationAttributes<Team>

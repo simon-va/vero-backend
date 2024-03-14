@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 import { ClubAttributes } from '../../types/club';
 import { CreationTeamAttributes } from '../../types/team';
 import { MemberAttributes } from '../../types/member';
-import TeamRepository from '../../db/repositories/team.repository';
-import TeamHandler from '../handlers/team.handler';
+import TeamRepository from '../../db/repositories/teamRepository';
+import TeamService from '../services/teamService';
 
 class TeamController {
     static async createTeam(req: Request, res: Response) {
@@ -11,7 +11,7 @@ class TeamController {
             const clubId: ClubAttributes['id'] = res.locals.clubId;
             const body: CreationTeamAttributes = req.body;
 
-            const team = await TeamHandler.createTeam({
+            const team = await TeamService.createTeam({
                 clubId,
                 teamPayload: body
             });
@@ -27,7 +27,7 @@ class TeamController {
         const member: MemberAttributes = res.locals.member;
 
         try {
-            const response = await TeamHandler.addMemberToTeam({
+            const response = await TeamService.addMemberToTeam({
                 teamId,
                 member
             });
@@ -49,7 +49,7 @@ class TeamController {
         const member: MemberAttributes = res.locals.member;
 
         try {
-            const response = await TeamHandler.removeMemberFromTeam({
+            const response = await TeamService.removeMemberFromTeam({
                 teamId,
                 memberId: member.id
             });

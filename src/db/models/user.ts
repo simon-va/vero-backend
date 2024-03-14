@@ -8,16 +8,18 @@ import {
     NonAttribute
 } from 'sequelize';
 import sequelize from '../config';
-import Member from './member.model';
-import Team from './team.model';
+import Member from './member';
 
-class Club extends Model<
-    InferAttributes<Club>,
-    InferCreationAttributes<Club>
+class User extends Model<
+    InferAttributes<User>,
+    InferCreationAttributes<User>
 > {
     // id can be undefined during creation when using `autoIncrement`
     declare id: CreationOptional<number>;
-    declare name: string;
+    declare firstName: string;
+    declare lastName: string;
+    declare email: string;
+    declare password: string;
 
     // timestamps!
     // createdAt can be undefined during creation
@@ -25,23 +27,34 @@ class Club extends Model<
     // updatedAt can be undefined during creation
     declare updatedAt: CreationOptional<Date>;
 
-    declare members?: NonAttribute<Member[]>;
-    declare teams?: NonAttribute<Team[]>;
-
     // associations
+    declare members?: NonAttribute<Member[]>;
+
     declare static associations: {
-        members: Association<Club, Member>;
-        teams: Association<Club, Team>;
+        members: Association<User, Member>;
     };
 }
 
-Club.init({
+User.init({
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    name: {
+    firstName: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    lastName: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    password: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -50,27 +63,17 @@ Club.init({
 }, {
     timestamps: true,
     sequelize: sequelize,
-    modelName: 'club'
+    tableName: 'users'
 });
 
-Club.hasMany(Member, {
-    foreignKey: 'clubId',
+User.hasMany(Member, {
+    foreignKey: 'userId',
     as: 'members'
 });
 
-Member.belongsTo(Club, {
-    foreignKey: 'clubId',
-    as: 'club'
+Member.belongsTo(User, {
+    foreignKey: 'userId',
+    as: 'user'
 });
 
-Club.hasMany(Team, {
-    foreignKey: 'clubId',
-    as: 'teams'
-});
-
-Team.belongsTo(Club, {
-    foreignKey: 'clubId',
-    as: 'club'
-});
-
-export default Club;
+export default User;

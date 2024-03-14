@@ -1,6 +1,6 @@
 import { TeamAttributes } from '../../types/team';
 import { MemberAttributes } from '../../types/member';
-import Member2Team from '../models/member2team.model';
+import Member2Team from '../models/member2team';
 
 interface GetMemberInTeamPayload {
     teamId: TeamAttributes['id'];

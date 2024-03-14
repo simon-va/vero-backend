@@ -1,7 +1,7 @@
 import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
 import sequelize from '../config';
-import Member from './member.model';
-import Team from './team.model';
+import Member from './member';
+import Team from './team';
 
 class Member2Team extends Model<
     InferAttributes<Member2Team>,

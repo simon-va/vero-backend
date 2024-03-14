@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 import { CreationUserAttributes, UserAttributes } from '../../types/user';
-import UserHandler from '../handlers/user.handler';
+import UserService from '../services/userService';
 
 class UserController {
     static async registerUser(req: Request, res: Response) {
         try {
             const payload: CreationUserAttributes = req.body;
 
-            const userData = await UserHandler.registerUser(payload);
+            const userData = await UserService.registerUser(payload);
 
             res.status(201).json(userData);
         } catch (error) {
@@ -22,7 +22,7 @@ class UserController {
             const user: UserAttributes= res.locals.user;
 
             // Sign token with user data
-            const token = await UserHandler.loginUser(user);
+            const token = await UserService.loginUser(user);
 
             res.status(200).json({ token });
         } catch (error) {

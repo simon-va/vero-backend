@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
 import { ClubAttributes } from '../../types/club';
 import { CreationMemberAttributes, MemberAttributes } from '../../types/member';
-import ClubRepository from '../../db/repositories/club.repository';
-import MemberRepository from '../../db/repositories/member.repository';
-import MemberHandler from '../handlers/member.handler';
+import ClubRepository from '../../db/repositories/clubRepository';
+import MemberRepository from '../../db/repositories/memberRepository';
+import MemberService from '../services/memberService';
 
 class MemberController {
     static async getMembersByClubId(req: Request, res: Response) {
         try {
             const clubId: ClubAttributes['id'] = res.locals.clubId;
 
-            const members = await MemberHandler.getMembersByClubId({ clubId });
+            const members = await MemberService.getMembersByClubId({ clubId });
 
             res.status(200).json(members);
         } catch (error) {
@@ -30,7 +30,7 @@ class MemberController {
         };
 
         try {
-            const member = await MemberHandler.createMember({
+            const member = await MemberService.createMember({
                 clubId: res.locals.clubId,
                 body: payload
             });
@@ -47,7 +47,7 @@ class MemberController {
         try {
             const member: MemberAttributes = res.locals.member;
 
-            const response = await MemberHandler.updateMember({
+            const response = await MemberService.updateMember({
                 body: req.body,
                 member
             });
@@ -70,7 +70,7 @@ class MemberController {
             const member: MemberAttributes = res.locals.member;
             const memberId: MemberAttributes['id'] = Number(req.params.memberId);
 
-            const response = await MemberHandler.deleteMember({
+            const response = await MemberService.deleteMember({
                 clubId,
                 member,
                 memberIdToDelete: memberId

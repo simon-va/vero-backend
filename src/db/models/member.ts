@@ -2,24 +2,29 @@ import {
     Association,
     CreationOptional,
     DataTypes,
+    ForeignKey,
     InferAttributes,
     InferCreationAttributes,
     Model,
     NonAttribute
 } from 'sequelize';
 import sequelize from '../config';
-import Member from './member.model';
+import User from './user';
+import Club from './club';
+import Team from './team';
+import Member2Team from './member2team';
 
-class User extends Model<
-    InferAttributes<User>,
-    InferCreationAttributes<User>
+class Member extends Model<
+    InferAttributes<Member>,
+    InferCreationAttributes<Member>
 > {
-    // id can be undefined during creation when using `autoIncrement`
     declare id: CreationOptional<number>;
     declare firstName: string;
     declare lastName: string;
+    declare userId: ForeignKey<User['id']>;
+    declare clubId: number;
     declare email: string;
-    declare password: string;
+    declare isAdmin: boolean;
 
     // timestamps!
     // createdAt can be undefined during creation
@@ -27,15 +32,16 @@ class User extends Model<
     // updatedAt can be undefined during creation
     declare updatedAt: CreationOptional<Date>;
 
-    // associations
-    declare members?: NonAttribute<Member[]>;
+    declare user?: NonAttribute<User>;
+    declare club?: NonAttribute<Club>;
 
+    // associations
     declare static associations: {
-        members: Association<User, Member>;
+        user: Association<Member, User>;
     };
 }
 
-User.init({
+Member.init({
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -49,31 +55,29 @@ User.init({
         type: DataTypes.STRING,
         allowNull: false
     },
+    userId: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    clubId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     email: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
+        defaultValue: ''
     },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
+    isAdmin: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
     },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
 }, {
     timestamps: true,
     sequelize: sequelize,
-    tableName: 'users'
+    tableName: 'members'
 });
 
-User.hasMany(Member, {
-    foreignKey: 'userId',
-    as: 'members'
-});
-
-Member.belongsTo(User, {
-    foreignKey: 'userId',
-    as: 'user'
-});
-
-export default User;
+export default Member;

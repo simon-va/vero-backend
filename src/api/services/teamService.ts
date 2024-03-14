@@ -1,9 +1,9 @@
 import { ClubAttributes } from '../../types/club';
 import { CreationTeamAttributes, TeamAttributes } from '../../types/team';
-import TeamRepository from '../../db/repositories/team.repository';
+import TeamRepository from '../../db/repositories/teamRepository';
 import { MemberAttributes } from '../../types/member';
-import Member2Team from '../../db/models/member2team.model';
-import Member2teamRepository from '../../db/repositories/member2team.repository';
+import Member2Team from '../../db/models/member2team';
+import Member2teamRepository from '../../db/repositories/member2teamRepository';
 
 interface CreateTeamPayload {
     clubId: ClubAttributes['id'];
@@ -20,7 +20,7 @@ interface RemoveMemberFromTeamPayload {
     memberId: MemberAttributes['id'];
 }
 
-class TeamHandler {
+class TeamService {
     static async createTeam({ teamPayload, clubId }: CreateTeamPayload) {
         return await TeamRepository.createTeam({
             name: teamPayload.name,
@@ -55,4 +55,4 @@ class TeamHandler {
     }
 }
 
-export default TeamHandler;
+export default TeamService;

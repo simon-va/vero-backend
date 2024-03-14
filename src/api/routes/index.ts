@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import userRoutes from './user.routes';
-import clubRoutes from './club.routes';
-import memberRoutes from './member.routes';
-import teamRoutes from './team.routes';
+import userRoutes from './userRoutes';
+import clubRoutes from './clubRoutes';
+import memberRoutes from './memberRouters';
+import teamRoutes from './teamRoutes';
 
 const router = Router();
 
