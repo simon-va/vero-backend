@@ -1,21 +1,30 @@
 import { NextFunction, Request, Response } from 'express';
+import sequelize from '../../db/config';
+import Club from '../../db/models/club';
+import User from '../../db/models/user';
 import { CreationClubAttributes } from '../../types/club';
-import { UserAttributes } from '../../types/user';
 import ClubService from '../services/clubService';
 
 class ClubController {
     static async createClub(req: Request, res: Response, next: NextFunction) {
-        const user: UserAttributes = res.locals.user;
+        const user: User = res.locals.user;
         const body: CreationClubAttributes = req.body;
+
+        const t = await sequelize.transaction();
 
         try {
             const { club, member } = await ClubService.createClub({
                 user,
-                clubPayload: body
+                clubPayload: body,
+                transaction: t
             });
+
+            await t.commit();
 
             res.status(201).send({ club, member });
         } catch (error) {
+            await t.rollback();
+
             next(error);
         }
     }
@@ -25,7 +34,7 @@ class ClubController {
         res: Response,
         next: NextFunction
     ) {
-        const { id }: UserAttributes = res.locals.user;
+        const { id }: User = res.locals.user;
 
         try {
             const clubs = await ClubService.getClubsByUserId(id);
@@ -37,12 +46,12 @@ class ClubController {
     }
 
     static async deleteClub(req: Request, res: Response, next: NextFunction) {
-        const clubId = Number(req.params.clubId);
+        const clubId: Club['id'] = Number(req.params.clubId);
 
         try {
-            await ClubService.deleteClub({ clubId });
+            await ClubService.deleteClub(clubId);
 
-            res.status(200).send({ message: 'Club deleted successfully' });
+            res.status(204).send();
         } catch (error) {
             next(error);
         }

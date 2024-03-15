@@ -13,6 +13,7 @@ interface CreateTeamPayload {
 interface AddMemberToTeamPayload {
     teamId: TeamAttributes['id'];
     memberId: MemberAttributes['id'];
+    clubId: ClubAttributes['id'];
 }
 
 interface RemoveMemberFromTeamPayload {
@@ -29,12 +30,25 @@ class TeamService {
         });
     }
 
-    static async addMemberToTeam({ memberId, teamId }: AddMemberToTeamPayload) {
+    static async addMemberToTeam({
+        memberId,
+        teamId,
+        clubId
+    }: AddMemberToTeamPayload) {
         const member = await MemberRepository.getMemberById(memberId);
         const team = await TeamRepository.getTeamById(teamId);
 
-        if (!member || !team) {
-            throw new BaseError('Member or team not found', 400, true);
+        if (
+            !member ||
+            !team ||
+            member.clubId !== clubId ||
+            team.clubId !== clubId
+        ) {
+            throw new BaseError(
+                'Member or team are not part of club',
+                400,
+                true
+            );
         }
 
         const isAlreadyInTeam = await member.hasTeam(team);
@@ -51,9 +65,23 @@ class TeamService {
         teamId,
         clubId
     }: RemoveMemberFromTeamPayload) {
-        // Todo check if member is in club
+        const team = await TeamRepository.getTeamById(teamId);
+        const member = await MemberRepository.getMemberById(memberId);
 
-        await TeamRepository.removeMemberFromTeam(teamId, memberId);
+        if (
+            !member ||
+            !team ||
+            member.clubId !== clubId ||
+            team.clubId !== clubId
+        ) {
+            throw new BaseError(
+                'Member or Team are not part of club',
+                400,
+                true
+            );
+        }
+
+        await TeamRepository.removeMemberFromTeam(team.id, member.id);
     }
 }
 

@@ -1,31 +1,36 @@
-import { ClubAttributes, CreationClubAttributes } from '../../types/club';
-import { UserAttributes } from '../../types/user';
+import { Transaction } from 'sequelize';
 import ClubRepository from '../../db/repositories/clubRepository';
 import MemberRepository from '../../db/repositories/memberRepository';
 import UserRepository from '../../db/repositories/userRepository';
+import { ClubAttributes, CreationClubAttributes } from '../../types/club';
+import { UserAttributes } from '../../types/user';
 
 interface CreateClubPayload {
     clubPayload: CreationClubAttributes;
     user: UserAttributes;
-}
-
-interface DeleteClubPayload {
-    clubId: ClubAttributes['id'];
+    transaction: Transaction;
 }
 
 class ClubService {
-    static async createClub({ user, clubPayload }: CreateClubPayload) {
-        const club = await ClubRepository.createClub(clubPayload);
+    static async createClub({
+        user,
+        clubPayload,
+        transaction
+    }: CreateClubPayload) {
+        const club = await ClubRepository.createClub(clubPayload, transaction);
 
-        const member = await MemberRepository.createMember({
-            userId: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            clubId: club.id,
-            isAdmin: true,
-            ...clubPayload
-        });
+        const member = await MemberRepository.createMember(
+            {
+                userId: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                clubId: club.id,
+                isAdmin: true,
+                ...clubPayload
+            },
+            transaction
+        );
 
         return { club, member };
     }
@@ -34,7 +39,7 @@ class ClubService {
         return await UserRepository.getClubsByUserId(userId);
     }
 
-    static async deleteClub({ clubId }: DeleteClubPayload) {
+    static async deleteClub(clubId: ClubAttributes['id']) {
         await ClubRepository.deleteClub(clubId);
     }
 }

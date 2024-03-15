@@ -1,3 +1,4 @@
+import { Transaction } from 'sequelize';
 import { ClubAttributes } from '../../types/club';
 import {
     CreationMemberAttributes,
@@ -7,8 +8,11 @@ import { UserAttributes } from '../../types/user';
 import Member from '../models/member';
 
 class MemberRepository {
-    static async createMember(payload: CreationMemberAttributes) {
-        return await Member.create(payload);
+    static async createMember(
+        payload: CreationMemberAttributes,
+        t?: Transaction
+    ) {
+        return await Member.create(payload, { transaction: t });
     }
 
     static async updateMember(payload: UpdateMemberPayload) {

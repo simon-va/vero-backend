@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import { ClubAttributes } from '../../types/club';
+import Club from '../../db/models/club';
+import Member from '../../db/models/member';
+import Team from '../../db/models/team';
 import { CreationTeamAttributes } from '../../types/team';
 import TeamService from '../services/teamService';
 
 class TeamController {
     static async createTeam(req: Request, res: Response, next: NextFunction) {
-        const clubId: ClubAttributes['id'] = Number(req.params.clubId);
+        const clubId: Club['id'] = Number(req.params.clubId);
         const body: CreationTeamAttributes = req.body;
 
         try {
@@ -25,13 +27,15 @@ class TeamController {
         res: Response,
         next: NextFunction
     ) {
-        const teamId = Number(req.params.teamId);
-        const memberId = Number(req.params.memberId);
+        const teamId: Team['id'] = Number(req.params.teamId);
+        const memberId: Member['id'] = Number(req.params.memberId);
+        const clubId: Club['id'] = Number(req.params.clubId);
 
         try {
             await TeamService.addMemberToTeam({
                 teamId,
-                memberId
+                memberId,
+                clubId
             });
 
             res.status(201).send();
@@ -45,9 +49,9 @@ class TeamController {
         res: Response,
         next: NextFunction
     ) {
-        const teamId = Number(req.params.teamId);
-        const memberId = Number(req.params.memberId);
-        const clubId = Number(req.params.clubId);
+        const teamId: Team['id'] = Number(req.params.teamId);
+        const memberId: Member['id'] = Number(req.params.memberId);
+        const clubId: Club['id'] = Number(req.params.clubId);
 
         try {
             await TeamService.removeMemberFromTeam({

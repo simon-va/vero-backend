@@ -1,5 +1,6 @@
-import Club from '../models/club';
+import { Transaction } from 'sequelize';
 import { ClubAttributes, CreationClubAttributes } from '../../types/club';
+import Club from '../models/club';
 
 class ClubRepository {
     static async deleteClub(clubId: ClubAttributes['id']) {
@@ -10,8 +11,8 @@ class ClubRepository {
         });
     }
 
-    static async createClub(payload: CreationClubAttributes) {
-        return await Club.create(payload);
+    static async createClub(payload: CreationClubAttributes, t: Transaction) {
+        return await Club.create(payload, { transaction: t });
     }
 }
 
