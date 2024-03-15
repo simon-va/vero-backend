@@ -1,22 +1,19 @@
 import {
-    Model,
+    CreationOptional,
     DataTypes,
     InferAttributes,
     InferCreationAttributes,
-    CreationOptional
+    Model
 } from 'sequelize';
 import sequelize from '../config';
+import Member from './member';
 
 class Team extends Model<InferAttributes<Team>, InferCreationAttributes<Team>> {
-    // id can be undefined during creation when using `autoIncrement`
     declare id: CreationOptional<number>;
     declare name: string;
     declare clubId: number;
 
-    // timestamps!
-    // createdAt can be undefined during creation
     declare createdAt: CreationOptional<Date>;
-    // updatedAt can be undefined during creation
     declare updatedAt: CreationOptional<Date>;
 }
 
@@ -44,5 +41,17 @@ Team.init(
         tableName: 'teams'
     }
 );
+
+Member.belongsToMany(Team, {
+    through: 'Member2Team',
+    foreignKey: 'memberId',
+    otherKey: 'teamId'
+});
+
+Team.belongsToMany(Member, {
+    through: 'Member2Team',
+    foreignKey: 'teamId',
+    otherKey: 'memberId'
+});
 
 export default Team;

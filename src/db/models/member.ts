@@ -1,16 +1,20 @@
 import {
     Association,
+    BelongsToManyAddAssociationMixin,
+    BelongsToManyRemoveAssociationMixin,
     CreationOptional,
     DataTypes,
     ForeignKey,
+    HasManyHasAssociationMixin,
     InferAttributes,
     InferCreationAttributes,
     Model,
     NonAttribute
 } from 'sequelize';
 import sequelize from '../config';
-import User from './user';
 import Club from './club';
+import Team from './team';
+import User from './user';
 
 class Member extends Model<
     InferAttributes<Member>,
@@ -24,14 +28,16 @@ class Member extends Model<
     declare email: string;
     declare isAdmin: boolean;
 
-    // timestamps!
-    // createdAt can be undefined during creation
     declare createdAt: CreationOptional<Date>;
-    // updatedAt can be undefined during creation
     declare updatedAt: CreationOptional<Date>;
 
     declare user?: NonAttribute<User>;
     declare club?: NonAttribute<Club>;
+
+    declare addTeam: BelongsToManyAddAssociationMixin<Team, number>;
+    declare removeTeam: BelongsToManyRemoveAssociationMixin<Team, number>;
+
+    declare hasTeam: HasManyHasAssociationMixin<Team, number>;
 
     // associations
     declare static associations: {

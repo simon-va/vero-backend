@@ -1,9 +1,9 @@
-import { ClubAttributes } from '../../types/club';
-import { CreationTeamAttributes, TeamAttributes } from '../../types/team';
+import MemberRepository from '../../db/repositories/memberRepository';
 import TeamRepository from '../../db/repositories/teamRepository';
-import { MemberAttributes } from '../../types/member';
-import Member2teamRepository from '../../db/repositories/member2teamRepository';
 import BaseError from '../../errors/BaseError';
+import { ClubAttributes } from '../../types/club';
+import { MemberAttributes } from '../../types/member';
+import { CreationTeamAttributes, TeamAttributes } from '../../types/team';
 
 interface CreateTeamPayload {
     clubId: ClubAttributes['id'];
@@ -12,12 +12,13 @@ interface CreateTeamPayload {
 
 interface AddMemberToTeamPayload {
     teamId: TeamAttributes['id'];
-    member: MemberAttributes;
+    memberId: MemberAttributes['id'];
 }
 
 interface RemoveMemberFromTeamPayload {
     teamId: TeamAttributes['id'];
     memberId: MemberAttributes['id'];
+    clubId: ClubAttributes['id'];
 }
 
 class TeamService {
@@ -28,24 +29,30 @@ class TeamService {
         });
     }
 
-    static async addMemberToTeam({ member, teamId }: AddMemberToTeamPayload) {
-        // check, if member is already in team
-        const entry = await Member2teamRepository.getMemberInTeam({
-            teamId,
-            memberId: member.id
-        });
+    static async addMemberToTeam({ memberId, teamId }: AddMemberToTeamPayload) {
+        const member = await MemberRepository.getMemberById(memberId);
+        const team = await TeamRepository.getTeamById(teamId);
 
-        if (entry) {
-            throw new BaseError('Member is already in team', 409, true);
+        if (!member || !team) {
+            throw new BaseError('Member or team not found', 400, true);
         }
 
-        await TeamRepository.addMemberToTeam(teamId, member.id);
+        const isAlreadyInTeam = await member.hasTeam(team);
+
+        if (isAlreadyInTeam) {
+            throw new BaseError('Member is already in team', 400, true);
+        }
+
+        await TeamRepository.addMemberToTeam(member, team);
     }
 
     static async removeMemberFromTeam({
         memberId,
-        teamId
+        teamId,
+        clubId
     }: RemoveMemberFromTeamPayload) {
+        // Todo check if member is in club
+
         await TeamRepository.removeMemberFromTeam(teamId, memberId);
     }
 }

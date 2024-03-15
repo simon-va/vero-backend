@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { ClubAttributes } from '../../types/club';
 import { CreationTeamAttributes } from '../../types/team';
-import { MemberAttributes } from '../../types/member';
 import TeamService from '../services/teamService';
 
 class TeamController {
@@ -27,12 +26,12 @@ class TeamController {
         next: NextFunction
     ) {
         const teamId = Number(req.params.teamId);
-        const member: MemberAttributes = res.locals.member;
+        const memberId = Number(req.params.memberId);
 
         try {
             await TeamService.addMemberToTeam({
                 teamId,
-                member
+                memberId
             });
 
             res.status(201).send();
@@ -47,12 +46,14 @@ class TeamController {
         next: NextFunction
     ) {
         const teamId = Number(req.params.teamId);
-        const member: MemberAttributes = res.locals.member;
+        const memberId = Number(req.params.memberId);
+        const clubId = Number(req.params.clubId);
 
         try {
             await TeamService.removeMemberFromTeam({
                 teamId,
-                memberId: member.id
+                memberId,
+                clubId
             });
 
             res.status(200).send();
