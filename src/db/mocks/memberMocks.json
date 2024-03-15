@@ -1,0 +1,205 @@
+[
+  {
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "userId": 1,
+    "clubId": 1,
+    "isAdmin": true
+  },
+  {
+    "firstName": "Alice",
+    "lastName": "Smith",
+    "userId": 2,
+    "clubId": 2,
+    "isAdmin": true
+  },
+  {
+    "firstName": "Michael",
+    "lastName": "Johnson",
+    "email": "michael.johnson@example.com",
+    "userId": 3,
+    "clubId": 3,
+    "isAdmin": true
+  },
+  {
+    "firstName": "Emily",
+    "lastName": "Brown",
+    "userId": 4,
+    "clubId": 4,
+    "isAdmin": true
+  },
+  {
+    "firstName": "David",
+    "lastName": "Jones",
+    "email": "david.jones@example.com",
+    "userId": 5,
+    "clubId": 5,
+    "isAdmin": true
+  },
+  {
+    "firstName": "Sarah",
+    "lastName": "Miller",
+    "userId": 6,
+    "clubId": 1,
+    "isAdmin": true
+  },
+  {
+    "firstName": "Christopher",
+    "lastName": "Wilson",
+    "userId": 7,
+    "clubId": 2,
+    "isAdmin": true
+  },
+  {
+    "firstName": "Jessica",
+    "lastName": "Taylor",
+    "email": "jessica.taylor@example.com",
+    "userId": 8,
+    "clubId": 3,
+    "isAdmin": true
+  },
+  {
+    "firstName": "Matthew",
+    "lastName": "Martinez",
+    "userId": 9,
+    "clubId": 4,
+    "isAdmin": true
+  },
+  {
+    "firstName": "Amanda",
+    "lastName": "Lee",
+    "email": "amanda.lee@example.com",
+    "userId": 10,
+    "clubId": 5,
+    "isAdmin": true
+  },
+  {
+    "firstName": "Jan",
+    "lastName": "Klein",
+    "clubId": 1,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Lisa",
+    "lastName": "Schulz",
+    "clubId": 2,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Michael",
+    "lastName": "Lange",
+    "email": "michael@example.com",
+    "clubId": 3,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Sophie",
+    "lastName": "Lehmann",
+    "clubId": 4,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Stefan",
+    "lastName": "Huber",
+    "email": "stefan@example.com",
+    "clubId": 5,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Carina",
+    "lastName": "Krause",
+    "clubId": 1,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Markus",
+    "lastName": "Schmitt",
+    "clubId": 2,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Nicole",
+    "lastName": "Herrmann",
+    "email": "nicole@example.com",
+    "clubId": 3,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Christian",
+    "lastName": "Seidel",
+    "clubId": 4,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Tanja",
+    "lastName": "Lang",
+    "email": "tanja@example.com",
+    "clubId": 5,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Felix",
+    "lastName": "Bauer",
+    "clubId": 1,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Maria",
+    "lastName": "Keller",
+    "clubId": 2,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Andreas",
+    "lastName": "Schwarz",
+    "email": "andreas@example.com",
+    "clubId": 3,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Katrin",
+    "lastName": "Werner",
+    "clubId": 4,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Alexander",
+    "lastName": "Fuchs",
+    "email": "alexander@example.com",
+    "clubId": 5,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Laura",
+    "lastName": "Schubert",
+    "clubId": 1,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Daniel",
+    "lastName": "Wolf",
+    "clubId": 2,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Sandra",
+    "lastName": "Brandt",
+    "email": "sandra@example.com",
+    "clubId": 3,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Patrick",
+    "lastName": "Simon",
+    "clubId": 4,
+    "isAdmin": false
+  },
+  {
+    "firstName": "Julia",
+    "lastName": "Baumann",
+    "email": "julia@example.com",
+    "clubId": 5,
+    "isAdmin": false
+  }
+]
