@@ -3,7 +3,8 @@ import {
     DataTypes,
     InferAttributes,
     InferCreationAttributes,
-    Model
+    Model,
+    NonAttribute
 } from 'sequelize';
 import sequelize from '../config';
 import Member from './member';
@@ -12,6 +13,8 @@ class Team extends Model<InferAttributes<Team>, InferCreationAttributes<Team>> {
     declare id: CreationOptional<number>;
     declare name: string;
     declare clubId: number;
+
+    declare members?: NonAttribute<Member[]>;
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
@@ -45,13 +48,15 @@ Team.init(
 Member.belongsToMany(Team, {
     through: 'Member2Team',
     foreignKey: 'memberId',
-    otherKey: 'teamId'
+    otherKey: 'teamId',
+    as: 'teams'
 });
 
 Team.belongsToMany(Member, {
     through: 'Member2Team',
     foreignKey: 'teamId',
-    otherKey: 'memberId'
+    otherKey: 'memberId',
+    as: 'members'
 });
 
 export default Team;

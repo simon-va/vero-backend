@@ -30,6 +30,19 @@ class TeamRepository {
             throw new BaseError('Member or team not found', 400, true);
         }
     }
+
+    static async getTeamsWithMembers(clubId: number) {
+        return await Team.findAll({
+            where: { clubId },
+            include: [
+                {
+                    model: Member,
+                    attributes: ['id'],
+                    as: 'members'
+                }
+            ]
+        });
+    }
 }
 
 export default TeamRepository;

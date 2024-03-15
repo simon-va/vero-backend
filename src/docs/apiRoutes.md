@@ -273,6 +273,31 @@ Prefix `/clubs/:clubId/members`
 Prefix `/clubs/:clubId/teams`
 
 <details>
+ <summary><code>GET</code> <code><b>/</b></code> <code>(returns a teams with memberIds)</code></summary>
+
+##### Parameters
+
+| name   | description |
+|--------|-------------|
+| userId | N/A         |
+
+#### Body
+
+- None
+
+##### Responses
+
+| http code | response                                         |
+|-----------|--------------------------------------------------|
+| `200`     | Teams with memberIds                             |
+| `400`     | Validation failed - provide correct params       |
+| `400`     | AccessToken not found                            |
+| `401`     | Invalid token - Token expired                    |
+| `401`     | Unauthorized                                     |
+
+</details>
+
+<details>
  <summary><code>POST</code> <code><b>/</b></code> <code>(creates a new team)</code></summary>
 
 ##### Parameters

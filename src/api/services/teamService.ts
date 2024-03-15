@@ -76,6 +76,16 @@ class TeamService {
 
         await TeamRepository.removeMemberFromTeam(team.id, member.id);
     }
+
+    static async getTeamsWithMembers(clubId: number) {
+        const teams = await TeamRepository.getTeamsWithMembers(clubId);
+
+        return teams.map((team) => ({
+            id: team.id,
+            name: team.name,
+            memberIds: team.members?.map((member) => member.id)
+        }));
+    }
 }
 
 export default TeamService;
