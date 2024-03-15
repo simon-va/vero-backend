@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { auth, AuthType } from '../middlewares/auth';
 import TeamController from '../controllers/teamController';
+import { auth, AuthType } from '../middlewares/auth';
 import {
     ParamValue,
     validateBody,
@@ -23,12 +23,14 @@ router.post(
     auth([AuthType.IsAdmin]),
     TeamController.createTeam
 );
+
 router.post(
     '/:clubId/teams/:teamId/members/:memberId',
     validateParams([ParamValue.ClubId, ParamValue.TeamId, ParamValue.MemberId]),
     auth([AuthType.IsAdmin]),
     TeamController.addMemberToTeam
 );
+
 router.delete(
     '/:clubId/teams/:teamId/members/:memberId',
     validateParams([ParamValue.ClubId, ParamValue.TeamId, ParamValue.MemberId]),

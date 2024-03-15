@@ -1,6 +1,7 @@
 import MemberRepository from '../../db/repositories/memberRepository';
 import TeamRepository from '../../db/repositories/teamRepository';
 import BaseError from '../../errors/BaseError';
+import Error400 from '../../errors/Error400';
 import { ClubAttributes } from '../../types/club';
 import { MemberAttributes } from '../../types/member';
 import { CreationTeamAttributes, TeamAttributes } from '../../types/team';
@@ -44,11 +45,7 @@ class TeamService {
             member.clubId !== clubId ||
             team.clubId !== clubId
         ) {
-            throw new BaseError(
-                'Member or team are not part of club',
-                400,
-                true
-            );
+            throw new Error400('Member or team are not part of club');
         }
 
         const isAlreadyInTeam = await member.hasTeam(team);
@@ -74,11 +71,7 @@ class TeamService {
             member.clubId !== clubId ||
             team.clubId !== clubId
         ) {
-            throw new BaseError(
-                'Member or Team are not part of club',
-                400,
-                true
-            );
+            throw new Error400('Member or Team are not part of club');
         }
 
         await TeamRepository.removeMemberFromTeam(team.id, member.id);

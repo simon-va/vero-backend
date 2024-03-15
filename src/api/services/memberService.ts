@@ -1,7 +1,7 @@
 import Club from '../../db/models/club';
 import ClubRepository from '../../db/repositories/clubRepository';
 import MemberRepository from '../../db/repositories/memberRepository';
-import BaseError from '../../errors/BaseError';
+import Error400 from '../../errors/Error400';
 import { ClubAttributes } from '../../types/club';
 import { CreationMemberAttributes, MemberAttributes } from '../../types/member';
 
@@ -30,7 +30,7 @@ class MemberService {
         const member = await MemberRepository.getMemberById(payload.id);
 
         if (!member || member.clubId !== clubId) {
-            throw new BaseError('Member not part of club', 400, true);
+            throw new Error400('Member not part of club');
         }
 
         await MemberRepository.updateMember(payload);
@@ -43,7 +43,7 @@ class MemberService {
         const members = await MemberRepository.getMembersByClubId(clubId);
 
         if (!members.some((member) => member.id === memberIdToDelete)) {
-            throw new BaseError('Member is not in team', 404, true);
+            throw new Error400('Member not part of club');
         }
 
         if (members.length === 1) {

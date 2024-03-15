@@ -1,8 +1,8 @@
+import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
-import { AccessTokenPayload } from '../../types/auth';
-import UserRepository from '../../db/repositories/userRepository';
 import MemberRepository from '../../db/repositories/memberRepository';
+import UserRepository from '../../db/repositories/userRepository';
+import { AccessTokenPayload } from '../../types/auth';
 import { UserAttributes } from '../../types/user';
 
 export enum AuthType {
@@ -24,7 +24,7 @@ export const auth = (types: AuthType[] = []) => {
 
             if (!accessToken) {
                 return res
-                    .status(401)
+                    .status(400)
                     .json({ errorMessage: 'AccessToken not found' });
             }
 
