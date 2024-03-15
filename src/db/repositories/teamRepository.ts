@@ -1,4 +1,4 @@
-import BaseError from '../../errors/BaseError';
+import Error400 from '../../errors/Error400';
 import { MemberAttributes } from '../../types/member';
 import { CreationTeamAttributes, TeamAttributes } from '../../types/team';
 import Member from '../models/member';
@@ -27,7 +27,7 @@ class TeamRepository {
         if (member && team) {
             await member.removeTeam(team);
         } else {
-            throw new BaseError('Member or team not found', 400, true);
+            throw new Error400('Member or team not found');
         }
     }
 

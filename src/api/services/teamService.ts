@@ -1,6 +1,5 @@
 import MemberRepository from '../../db/repositories/memberRepository';
 import TeamRepository from '../../db/repositories/teamRepository';
-import BaseError from '../../errors/BaseError';
 import Error400 from '../../errors/Error400';
 import { ClubAttributes } from '../../types/club';
 import { MemberAttributes } from '../../types/member';
@@ -51,7 +50,7 @@ class TeamService {
         const isAlreadyInTeam = await member.hasTeam(team);
 
         if (isAlreadyInTeam) {
-            throw new BaseError('Member is already in team', 400, true);
+            throw new Error400('Member is already in team');
         }
 
         await TeamRepository.addMemberToTeam(member, team);
