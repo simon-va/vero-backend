@@ -8,7 +8,8 @@
     "build": "tsc",
     "dev": "ts-node-dev --watch .src/index.ts ./src",
     "format": "prettier --write 'src/**/*.ts'",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "init-mocks": "ts-node src/db/mocks/init.ts"
   },
   "lint-staged": {
     "*.{ts}": [

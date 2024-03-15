@@ -1,0 +1,18 @@
+[
+  {"name": "armonieensemble", "clubId": 1},
+  {"name": "Melodiemacher", "clubId": 1},
+  {"name": "Klangkünstler", "clubId": 1},
+  {"name": "Tonträger", "clubId": 1},
+  {"name": "Titans", "clubId": 2},
+  {"name": "Falcons", "clubId": 2},
+  {"name": "Tigers", "clubId": 2},
+  {"name": "Sinfonieorchester", "clubId": 3},
+  {"name": "Kammerorchester", "clubId": 3},
+  {"name": "Streichensemble", "clubId": 3},
+  {"name": "Schachkönige", "clubId": 4},
+  {"name": "Denkerzüge", "clubId": 4},
+  {"name": "Bauernschlacht", "clubId": 4},
+  {"name": "StepUpCrew", "clubId": 5},
+  {"name": "Tanzträume", "clubId": 5}
+]
+
