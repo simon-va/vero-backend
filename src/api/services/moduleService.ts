@@ -15,6 +15,16 @@ class ModuleService {
 
         await ModuleRepository.addModuleToClub(clubId, moduleId);
     }
+
+    static async removeModuleFromClub(clubId: number, moduleId: number) {
+        const module = await ModuleRepository.getClubModule(clubId, moduleId);
+
+        if (!module) {
+            throw new Error400('Module not added to club');
+        }
+
+        await ModuleRepository.removeModuleFromClub(clubId, moduleId);
+    }
 }
 
 export default ModuleService;

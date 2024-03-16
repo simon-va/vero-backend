@@ -30,6 +30,23 @@ class ModuleController {
             next(error);
         }
     }
+
+    static async removeModuleFromClub(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        const clubId: Club['id'] = Number(req.params.clubId);
+        const moduleId: Module['id'] = Number(req.params.moduleId);
+
+        try {
+            await ModuleService.removeModuleFromClub(clubId, moduleId);
+
+            res.status(200).send();
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export default ModuleController;

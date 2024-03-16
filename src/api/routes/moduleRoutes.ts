@@ -18,4 +18,11 @@ router.post(
     ModuleController.addModuleToClub
 );
 
+router.delete(
+    '/:moduleId/clubs/:clubId',
+    validateParams([ParamValue.ModuleId, ParamValue.ClubId]),
+    auth([AuthType.IsAdmin]),
+    ModuleController.removeModuleFromClub
+);
+
 export default router;

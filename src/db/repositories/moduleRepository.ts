@@ -23,6 +23,15 @@ class ModuleRepository {
             }
         });
     }
+
+    static async removeModuleFromClub(clubId: number, moduleId: number) {
+        await ClubModule.destroy({
+            where: {
+                clubId,
+                moduleId
+            }
+        });
+    }
 }
 
 export default ModuleRepository;
