@@ -42,7 +42,7 @@ class ModuleController {
         try {
             await ModuleService.removeModuleFromClub(clubId, moduleId);
 
-            res.status(200).send();
+            res.status(204).send();
         } catch (error) {
             next(error);
         }

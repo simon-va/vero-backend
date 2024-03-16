@@ -25,7 +25,7 @@ router.get(
 router.get(
     '/:clubId',
     validateParams([ParamValue.ClubId]),
-    auth([]),
+    auth(),
     ClubController.getClubById
 );
 
