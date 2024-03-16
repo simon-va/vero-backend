@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
+import Club from '../../db/models/club';
+import Module from '../../db/models/module';
 import ModuleService from '../services/moduleService';
 
 class ModuleController {
@@ -6,7 +8,24 @@ class ModuleController {
         try {
             const modules = await ModuleService.getModules();
 
-            res.status(200).json(modules);
+            res.status(200).send(modules);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async addModuleToClub(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        const clubId: Club['id'] = Number(req.params.clubId);
+        const moduleId: Module['id'] = Number(req.params.moduleId);
+
+        try {
+            await ModuleService.addModuleToClub(clubId, moduleId);
+
+            res.status(201).send();
         } catch (error) {
             next(error);
         }

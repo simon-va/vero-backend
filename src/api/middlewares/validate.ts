@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import Validator, {
     ValidationError,
     ValidationSchema
@@ -26,7 +26,8 @@ export enum ParamValue {
     UserId = 'userId',
     ClubId = 'clubId',
     MemberId = 'memberId',
-    TeamId = 'teamId'
+    TeamId = 'teamId',
+    ModuleId = 'moduleId'
 }
 
 export const validateParams = (paramValues: ParamValue[] = []) => {
