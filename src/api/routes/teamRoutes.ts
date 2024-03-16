@@ -16,6 +16,13 @@ const createTeamSchema = {
     }
 };
 
+router.get(
+    '/:clubId/teams',
+    validateParams([ParamValue.ClubId]),
+    auth([]),
+    TeamController.getTeamsWithMembers
+);
+
 router.post(
     '/:clubId/teams',
     validateParams([ParamValue.ClubId]),

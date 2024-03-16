@@ -56,6 +56,18 @@ class ClubController {
             next(error);
         }
     }
+
+    static async getClubById(req: Request, res: Response, next: NextFunction) {
+        const clubId: Club['id'] = Number(req.params.clubId);
+
+        try {
+            const club = await ClubService.getClubById(clubId);
+
+            res.status(200).send(club);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export default ClubController;

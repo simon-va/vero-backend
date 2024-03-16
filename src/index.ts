@@ -1,11 +1,14 @@
 import express, { Application } from 'express';
-import routes from './api/routes';
-import sequelize from './db/config';
-import { IS_DEV } from './constants/environment';
+import helmet from 'helmet';
 import { errorHandler } from './api/middlewares/errors';
+import routes from './api/routes';
+import { IS_DEV } from './constants/environment';
+import sequelize from './db/config';
 
 const app: Application = express();
 const port = 3000;
+
+app.use(helmet());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

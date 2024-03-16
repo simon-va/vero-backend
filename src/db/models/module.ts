@@ -1,28 +1,24 @@
 import {
     CreationOptional,
     DataTypes,
-    ForeignKey,
     InferAttributes,
     InferCreationAttributes,
-    Model,
-    NonAttribute
+    Model
 } from 'sequelize';
 import sequelize from '../config';
-import Club from './club';
-import Member from './member';
 
-class Team extends Model<InferAttributes<Team>, InferCreationAttributes<Team>> {
+class Module extends Model<
+    InferAttributes<Module>,
+    InferCreationAttributes<Module>
+> {
     declare id: CreationOptional<number>;
     declare name: string;
-    declare clubId: ForeignKey<Club['id']>;
-
-    declare members?: NonAttribute<Member[]>;
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
 }
 
-Team.init(
+Module.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -41,18 +37,4 @@ Team.init(
     }
 );
 
-Member.belongsToMany(Team, {
-    through: 'TeamMember',
-    foreignKey: 'memberId',
-    otherKey: 'teamId',
-    as: 'teams'
-});
-
-Team.belongsToMany(Member, {
-    through: 'TeamMember',
-    foreignKey: 'teamId',
-    otherKey: 'memberId',
-    as: 'members'
-});
-
-export default Team;
+export default Module;

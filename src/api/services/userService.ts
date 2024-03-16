@@ -1,9 +1,9 @@
-import { CreationUserAttributes, UserAttributes } from '../../types/user';
-import UserRepository from '../../db/repositories/userRepository';
-import jwt from 'jsonwebtoken';
 import bcryptjs from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import UserRepository from '../../db/repositories/userRepository';
 import BaseError from '../../errors/BaseError';
 import Error400 from '../../errors/Error400';
+import { CreationUserAttributes, UserAttributes } from '../../types/user';
 
 class UserService {
     static async registerUser(payload: CreationUserAttributes) {
@@ -13,7 +13,16 @@ class UserService {
             throw new BaseError('Email already in use', 409, true);
         }
 
-        const user = await UserRepository.registerUser(payload);
+        const { password } = payload;
+
+        const salt = bcryptjs.genSaltSync(10);
+
+        const hashedPassword = bcryptjs.hashSync(password, salt);
+
+        const user = await UserRepository.registerUser({
+            ...payload,
+            password: hashedPassword
+        });
 
         const { id, firstName, lastName, email } = user;
 

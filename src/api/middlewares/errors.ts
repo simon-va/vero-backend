@@ -11,5 +11,7 @@ export const errorHandler = (
         res.status(err.statusCode || 500).send({ errorMessage: err.message });
     }
 
+    console.error(err);
+
     res.status(500).send('Internal server error');
 };

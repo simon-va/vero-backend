@@ -65,6 +65,22 @@ class TeamController {
             next(error);
         }
     }
+
+    static async getTeamsWithMembers(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        const clubId: Club['id'] = Number(req.params.clubId);
+
+        try {
+            const teams = await TeamService.getTeamsWithMembers(clubId);
+
+            res.status(200).send(teams);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export default TeamController;

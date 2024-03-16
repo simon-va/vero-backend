@@ -89,6 +89,31 @@ Prefix `/clubs`
 </details>
 
 <details>
+ <summary><code>GET</code> <code><b>/:clubId</b></code> <code>(returns a club)</code></summary>
+
+##### Parameters
+
+| name   | description |
+|--------|-------------|
+| clubId | N/A         |
+
+#### Body
+
+- None
+
+##### Responses
+
+| http code | response                                   |
+|-----------|--------------------------------------------|
+| `200`     | Club                                       |
+| `400`     | Validation failed - provide correct params |
+| `400`     | AccessToken not found                      |
+| `401`     | Invalid token - Token expired              |
+| `401`     | Unauthorized                               |
+
+</details>
+
+<details>
  <summary><code>POST</code> <code><b>/</b></code> <code>(creates a new club with first member)</code></summary>
 
 ##### Parameters
@@ -273,6 +298,31 @@ Prefix `/clubs/:clubId/members`
 Prefix `/clubs/:clubId/teams`
 
 <details>
+ <summary><code>GET</code> <code><b>/</b></code> <code>(returns a teams with memberIds)</code></summary>
+
+##### Parameters
+
+| name   | description |
+|--------|-------------|
+| userId | N/A         |
+
+#### Body
+
+- None
+
+##### Responses
+
+| http code | response                                   |
+|-----------|--------------------------------------------|
+| `200`     | Teams with memberIds                       |
+| `400`     | Validation failed - provide correct params |
+| `400`     | AccessToken not found                      |
+| `401`     | Invalid token - Token expired              |
+| `401`     | Unauthorized                               |
+
+</details>
+
+<details>
  <summary><code>POST</code> <code><b>/</b></code> <code>(creates a new team)</code></summary>
 
 ##### Parameters
@@ -356,3 +406,83 @@ Prefix `/clubs/:clubId/teams`
 | `401`     | Unauthorized                               |
 
 </details>
+
+------------------------------------------------------------------------------------------
+
+#### Everything related to modules
+
+Prefix `/modules`
+
+<details>
+ <summary><code>GET</code> <code><b>/</b></code> <code>(returns a list of all available modules)</code></summary>
+
+##### Parameters
+
+- None
+
+#### Body
+
+- None
+
+##### Responses
+
+| http code | response |
+|-----------|----------|
+| `200`     | Modules  |
+
+</details>
+
+<details>
+ <summary><code>POST</code> <code><b>/:moduleId/clubs/:clubId</b></code> <code>(adds a module to a club)</code></summary>
+
+##### Parameters
+
+| name     | description |
+|----------|-------------|
+| moduleId | N/A         |
+| clubId   | N/A         |
+
+#### Body
+
+- None
+
+##### Responses
+
+| http code | response                                   |
+|-----------|--------------------------------------------|
+| `201`     | N/A                                        |
+| `400`     | Module already added to club               |
+| `400`     | Validation failed - provide correct params |
+| `400`     | AccessToken not found                      |
+| `401`     | Invalid token - Token expired              |
+| `401`     | Unauthorized                               |
+
+</details>
+
+<details>
+ <summary><code>DELETE</code> <code><b>/:moduleId/clubs/:clubId</b></code> <code>(removes a module from a club)</code></summary>
+
+##### Parameters
+
+| name     | description |
+|----------|-------------|
+| moduleId | N/A         |
+| clubId   | N/A         |
+
+#### Body
+
+- None
+
+##### Responses
+
+| http code | response                                   |
+|-----------|--------------------------------------------|
+| `204`     | N/A                                        |
+| `400`     | Module already added to club               |
+| `400`     | Validation failed - provide correct params |
+| `400`     | AccessToken not found                      |
+| `401`     | Invalid token - Token expired              |
+| `401`     | Unauthorized                               |
+
+</details>
+

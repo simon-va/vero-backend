@@ -60,9 +60,7 @@ User.init(
         updatedAt: DataTypes.DATE
     },
     {
-        timestamps: true,
-        sequelize: sequelize,
-        tableName: 'users'
+        sequelize: sequelize
     }
 );
 

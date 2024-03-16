@@ -1,7 +1,7 @@
 import { Transaction } from 'sequelize';
+import Club from '../../db/models/club';
 import ClubRepository from '../../db/repositories/clubRepository';
 import MemberRepository from '../../db/repositories/memberRepository';
-import UserRepository from '../../db/repositories/userRepository';
 import { ClubAttributes, CreationClubAttributes } from '../../types/club';
 import { UserAttributes } from '../../types/user';
 
@@ -36,11 +36,26 @@ class ClubService {
     }
 
     static async getClubsByUserId(userId: UserAttributes['id']) {
-        return await UserRepository.getClubsByUserId(userId);
+        return await ClubRepository.getClubsByUserId(userId);
     }
 
     static async deleteClub(clubId: ClubAttributes['id']) {
         await ClubRepository.deleteClub(clubId);
+    }
+
+    static async getClubById(clubId: ClubAttributes['id']) {
+        const club = await ClubRepository.getClubById(clubId);
+
+        if (!club) {
+            throw new Error('Club not found');
+        }
+
+        const { clubModules, ...rest } = club.toJSON<Club>();
+
+        return {
+            ...rest,
+            modules: club.clubModules?.map(({ moduleId }) => moduleId)
+        };
     }
 }
 

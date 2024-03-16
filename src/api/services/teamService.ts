@@ -1,6 +1,5 @@
 import MemberRepository from '../../db/repositories/memberRepository';
 import TeamRepository from '../../db/repositories/teamRepository';
-import BaseError from '../../errors/BaseError';
 import Error400 from '../../errors/Error400';
 import { ClubAttributes } from '../../types/club';
 import { MemberAttributes } from '../../types/member';
@@ -51,7 +50,7 @@ class TeamService {
         const isAlreadyInTeam = await member.hasTeam(team);
 
         if (isAlreadyInTeam) {
-            throw new BaseError('Member is already in team', 400, true);
+            throw new Error400('Member is already in team');
         }
 
         await TeamRepository.addMemberToTeam(member, team);
@@ -74,7 +73,17 @@ class TeamService {
             throw new Error400('Member or Team are not part of club');
         }
 
-        await TeamRepository.removeMemberFromTeam(team.id, member.id);
+        await TeamRepository.removeMemberFromTeam(team, member);
+    }
+
+    static async getTeamsWithMembers(clubId: number) {
+        const teams = await TeamRepository.getTeamsWithMembers(clubId);
+
+        return teams.map((team) => ({
+            id: team.id,
+            name: team.name,
+            memberIds: team.members?.map((member) => member.id)
+        }));
     }
 }
 

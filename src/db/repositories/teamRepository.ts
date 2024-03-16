@@ -1,5 +1,3 @@
-import BaseError from '../../errors/BaseError';
-import { MemberAttributes } from '../../types/member';
 import { CreationTeamAttributes, TeamAttributes } from '../../types/team';
 import Member from '../models/member';
 import Team from '../models/team';
@@ -18,17 +16,23 @@ class TeamRepository {
     }
 
     static async removeMemberFromTeam(
-        teamId: TeamAttributes['id'],
-        memberId: MemberAttributes['id']
+        team: Team,
+        member: Member
     ): Promise<void> {
-        const member = await Member.findByPk(memberId);
-        const team = await Team.findByPk(teamId);
+        await member.removeTeam(team);
+    }
 
-        if (member && team) {
-            await member.removeTeam(team);
-        } else {
-            throw new BaseError('Member or team not found', 400, true);
-        }
+    static async getTeamsWithMembers(clubId: number) {
+        return await Team.findAll({
+            where: { clubId },
+            include: [
+                {
+                    model: Member,
+                    as: 'members',
+                    attributes: ['id']
+                }
+            ]
+        });
     }
 }
 

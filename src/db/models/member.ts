@@ -24,7 +24,7 @@ class Member extends Model<
     declare firstName: string;
     declare lastName: string;
     declare userId: ForeignKey<User['id']>;
-    declare clubId: number;
+    declare clubId: ForeignKey<Club['id']>;
     declare email: string;
     declare isAdmin: boolean;
 
@@ -60,14 +60,6 @@ Member.init(
             type: DataTypes.STRING,
             allowNull: false
         },
-        userId: {
-            type: DataTypes.INTEGER,
-            allowNull: true
-        },
-        clubId: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
         email: {
             type: DataTypes.STRING,
             defaultValue: ''
@@ -81,9 +73,7 @@ Member.init(
         updatedAt: DataTypes.DATE
     },
     {
-        timestamps: true,
-        sequelize: sequelize,
-        tableName: 'members'
+        sequelize: sequelize
     }
 );
 
