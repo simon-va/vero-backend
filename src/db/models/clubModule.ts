@@ -41,7 +41,7 @@ ClubModule.init(
 
 Club.hasMany(ClubModule, {
     foreignKey: 'clubId',
-    as: 'modules'
+    as: 'clubModules'
 });
 
 ClubModule.belongsTo(Club, {

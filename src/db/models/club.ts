@@ -8,6 +8,7 @@ import {
     NonAttribute
 } from 'sequelize';
 import sequelize from '../config';
+import ClubModule from './clubModule';
 import Member from './member';
 import Team from './team';
 
@@ -24,11 +25,13 @@ class Club extends Model<InferAttributes<Club>, InferCreationAttributes<Club>> {
 
     declare members?: NonAttribute<Member[]>;
     declare teams?: NonAttribute<Team[]>;
+    declare clubModules?: NonAttribute<ClubModule[]>;
 
     // associations
     declare static associations: {
         members: Association<Club, Member>;
         teams: Association<Club, Team>;
+        clubModules: Association<Club, ClubModule>;
     };
 }
 

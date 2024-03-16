@@ -21,12 +21,21 @@ router.get(
     auth([AuthType.NoMember, AuthType.User]),
     ClubController.getClubsByUserId
 );
+
+router.get(
+    '/:clubId',
+    validateParams([ParamValue.ClubId]),
+    auth([]),
+    ClubController.getClubById
+);
+
 router.post(
     '',
     validateBody(createClubBodySchema),
     auth([AuthType.NoMember, AuthType.User]),
     ClubController.createClub
 );
+
 router.delete(
     '/:clubId',
     validateParams([ParamValue.ClubId]),
