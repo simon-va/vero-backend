@@ -1,5 +1,3 @@
-import Error400 from '../../errors/Error400';
-import { MemberAttributes } from '../../types/member';
 import { CreationTeamAttributes, TeamAttributes } from '../../types/team';
 import Member from '../models/member';
 import Team from '../models/team';
@@ -18,17 +16,10 @@ class TeamRepository {
     }
 
     static async removeMemberFromTeam(
-        teamId: TeamAttributes['id'],
-        memberId: MemberAttributes['id']
+        team: Team,
+        member: Member
     ): Promise<void> {
-        const member = await Member.findByPk(memberId);
-        const team = await Team.findByPk(teamId);
-
-        if (member && team) {
-            await member.removeTeam(team);
-        } else {
-            throw new Error400('Member or team not found');
-        }
+        await member.removeTeam(team);
     }
 
     static async getTeamsWithMembers(clubId: number) {
@@ -37,8 +28,8 @@ class TeamRepository {
             include: [
                 {
                     model: Member,
-                    attributes: ['id'],
-                    as: 'members'
+                    as: 'members',
+                    attributes: ['id']
                 }
             ]
         });

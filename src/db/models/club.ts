@@ -47,9 +47,7 @@ Club.init(
         updatedAt: DataTypes.DATE
     },
     {
-        timestamps: true,
-        sequelize: sequelize,
-        modelName: 'club'
+        sequelize: sequelize
     }
 );
 

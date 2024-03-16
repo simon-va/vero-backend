@@ -73,7 +73,7 @@ class TeamService {
             throw new Error400('Member or Team are not part of club');
         }
 
-        await TeamRepository.removeMemberFromTeam(team.id, member.id);
+        await TeamRepository.removeMemberFromTeam(team, member);
     }
 
     static async getTeamsWithMembers(clubId: number) {
