@@ -10,3 +10,4 @@ This documentation provides all necessary information about the planned features
 - Inventory
 - Tasks
 - Chat
+- Finance
