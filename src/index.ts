@@ -3,7 +3,6 @@ import express, { Application } from 'express';
 import helmet from 'helmet';
 import { errorHandler } from './api/middlewares/errors';
 import routes from './api/routes';
-import { IS_DEV } from './constants/environment';
 import sequelize from './db/config';
 
 const app: Application = express();
@@ -19,7 +18,7 @@ app.use('/api/v1', routes);
 app.use(errorHandler);
 
 try {
-    sequelize.sync({ alter: IS_DEV }).then(() => {
+    sequelize.sync({ alter: true }).then(() => {
         app.listen(port, () => {
             console.log(`Server is running on port ${port}`);
         });

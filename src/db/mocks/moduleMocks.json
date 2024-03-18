@@ -1,5 +1,38 @@
 [
   {
-    "name": "events"
+    "name": "Events",
+    "description": "Mit dem Events-Modul könnt ihr eure eigenen Events erstellen und verwalten. Egal ob Konzert, Stadtmeisterschaft oder Ausflug. ",
+    "iconId": 1,
+    "isComingSoon": false
+  },
+  {
+    "name": "Finanzen",
+    "description": "Mit dem Finanzen-Modul könnt ihr eure Finanzen im Blick behalten. Egal, ob das Konto, oder Belege.",
+    "iconId": 2,
+    "isComingSoon": true
+  },
+  {
+    "name": "Aufgaben",
+    "description": "Mit dem Aufgaben-Modul könnt ihr eure Aufgaben verwalten. Aufgaben können dabei auch an andere Mitglieder delegiert werden.",
+    "iconId": 3,
+    "isComingSoon": true
+  },
+  {
+    "name": "Chat",
+    "description": "Mit dem Chat-Modul könnt ihr euch mit anderen Mitgliedern austauschen. Egal ob im Einzelchat oder in Gruppen.",
+    "iconId": 4,
+    "isComingSoon": true
+  },
+  {
+    "name": "Finanzen",
+    "description": "Mit dem Finanzen-Modul könnt ihr eure Finanzen im Blick behalten. Egal, ob das Konto, oder Belege.",
+    "iconId": 5,
+    "isComingSoon": true
+  },
+  {
+    "name": "Inventar",
+    "description": "Mit dem Inventar-Modul könnt ihr euer Inventar verwalten. Egal ob Musikinstrumente, Noten oder sonstige Gegenstände.",
+    "iconId": 6,
+    "isComingSoon": true
   }
 ]

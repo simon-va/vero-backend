@@ -6,8 +6,9 @@ import { ParamValue, validateParams } from '../middlewares/validate';
 const router = express.Router();
 
 router.get(
-    '/',
-    auth([AuthType.NoMember, AuthType.NoToken]),
+    '/clubs/:clubId',
+    validateParams([ParamValue.ClubId]),
+    auth(),
     ModuleController.getModules
 );
 

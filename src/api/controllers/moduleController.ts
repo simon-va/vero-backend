@@ -5,8 +5,10 @@ import ModuleService from '../services/moduleService';
 
 class ModuleController {
     static async getModules(req: Request, res: Response, next: NextFunction) {
+        const clubId: Club['id'] = Number(req.params.clubId);
+
         try {
-            const modules = await ModuleService.getModules();
+            const modules = await ModuleService.getModules(clubId);
 
             res.status(200).send(modules);
         } catch (error) {

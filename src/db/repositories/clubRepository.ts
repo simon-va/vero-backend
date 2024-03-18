@@ -2,7 +2,6 @@ import { Transaction } from 'sequelize';
 import { ClubAttributes, CreationClubAttributes } from '../../types/club';
 import { UserAttributes } from '../../types/user';
 import Club from '../models/club';
-import ClubModule from '../models/clubModule';
 import Member from '../models/member';
 
 class ClubRepository {
@@ -40,13 +39,6 @@ class ClubRepository {
 
     static getClubById(clubId: ClubAttributes['id']) {
         return Club.findByPk(clubId, {
-            include: [
-                {
-                    model: ClubModule,
-                    as: 'clubModules',
-                    attributes: ['moduleId']
-                }
-            ],
             attributes: ['id', 'name']
         });
     }

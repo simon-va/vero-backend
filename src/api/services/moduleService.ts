@@ -2,8 +2,23 @@ import ModuleRepository from '../../db/repositories/moduleRepository';
 import Error400 from '../../errors/Error400';
 
 class ModuleService {
-    static async getModules() {
-        return await ModuleRepository.getModules();
+    static async getModules(clubId: number) {
+        const modules = await ModuleRepository.getModulesForClub();
+
+        return modules.map((module) => {
+            const clubModule = module.clubs?.find(
+                (clubModule) => clubModule.clubId === clubId
+            );
+
+            return {
+                id: module.id,
+                name: module.name,
+                iconId: module.iconId,
+                description: module.description,
+                isComingSoon: module.isComingSoon,
+                isSelected: !!clubModule
+            };
+        });
     }
 
     static async addModuleToClub(clubId: number, moduleId: number) {

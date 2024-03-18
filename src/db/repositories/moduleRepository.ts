@@ -2,9 +2,15 @@ import ClubModule from '../models/clubModule';
 import Module from '../models/module';
 
 class ModuleRepository {
-    static async getModules() {
+    static async getModulesForClub() {
         return await Module.findAll({
-            attributes: ['id', 'name', 'description']
+            attributes: ['id', 'name', 'description', 'iconId', 'isComingSoon'],
+            include: [
+                {
+                    model: ClubModule,
+                    as: 'clubs'
+                }
+            ]
         });
     }
 
