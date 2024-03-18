@@ -13,6 +13,7 @@ class Module extends Model<
 > {
     declare id: CreationOptional<number>;
     declare name: string;
+    declare description: string;
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
@@ -26,6 +27,10 @@ Module.init(
             primaryKey: true
         },
         name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        description: {
             type: DataTypes.STRING,
             allowNull: false
         },
