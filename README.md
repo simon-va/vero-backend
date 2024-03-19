@@ -50,3 +50,19 @@ Got to the [Routes - API Documentation](./src/docs/apiRoutes.md) for a list of a
 ### License
 
 This project is available for use under the MIT License.
+
+
+
+# Deployment
+
+Läuft mit nohup command zum starten:
+  setsid nohup npm run dev &
+  aktuelle processID: 1037y
+zum connecten mit der ec2:
+  ssh -i ~/.ssh/VerO.pem ubuntu@3.79.150.42 # ip kann sich ggf. ändern
+zum updaten:
+  git pull
+  npm ci
+  kill <processID>
+  setsid nohup npm run dev &
+
