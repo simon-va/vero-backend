@@ -22,10 +22,16 @@ interface RemoveMemberFromTeamPayload {
     clubId: ClubAttributes['id'];
 }
 
+interface DeleteTeamPayload {
+    teamId: TeamAttributes['id'];
+    clubId: ClubAttributes['id'];
+}
+
 class TeamService {
     static async createTeam({ teamPayload, clubId }: CreateTeamPayload) {
         return await TeamRepository.createTeam({
             name: teamPayload.name,
+            isSystemTeam: teamPayload.isSystemTeam,
             clubId: clubId
         });
     }
@@ -82,8 +88,23 @@ class TeamService {
         return teams.map((team) => ({
             id: team.id,
             name: team.name,
+            isSystemTeam: team.isSystemTeam,
             memberIds: team.members?.map((member) => member.id)
         }));
+    }
+
+    static async deleteTeam({ teamId, clubId }: DeleteTeamPayload) {
+        const team = await TeamRepository.getTeamById(teamId);
+
+        if (!team || team.clubId !== clubId) {
+            throw new Error400('Team not found');
+        }
+
+        if (team.isSystemTeam) {
+            throw new Error400('Cannot delete system team');
+        }
+
+        return await TeamRepository.deleteTeam(teamId);
     }
 }
 

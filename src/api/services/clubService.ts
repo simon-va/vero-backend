@@ -2,6 +2,7 @@ import { Transaction } from 'sequelize';
 import Club from '../../db/models/club';
 import ClubRepository from '../../db/repositories/clubRepository';
 import MemberRepository from '../../db/repositories/memberRepository';
+import TeamRepository from '../../db/repositories/teamRepository';
 import { ClubAttributes, CreationClubAttributes } from '../../types/club';
 import { UserAttributes } from '../../types/user';
 
@@ -32,7 +33,18 @@ class ClubService {
             transaction
         );
 
-        return { club, member };
+        const team = await TeamRepository.createTeam(
+            {
+                name: 'Admin',
+                isSystemTeam: true,
+                clubId: club.id
+            },
+            transaction
+        );
+
+        await TeamRepository.addMemberToTeam(member, team, transaction);
+
+        return { club, member, team };
     }
 
     static async getClubsByUserId(userId: UserAttributes['id']) {

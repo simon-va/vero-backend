@@ -15,6 +15,7 @@ class Team extends Model<InferAttributes<Team>, InferCreationAttributes<Team>> {
     declare id: CreationOptional<number>;
     declare name: string;
     declare clubId: ForeignKey<Club['id']>;
+    declare isSystemTeam: boolean;
 
     declare members?: NonAttribute<Member[]>;
 
@@ -31,6 +32,10 @@ Team.init(
         },
         name: {
             type: DataTypes.STRING,
+            allowNull: false
+        },
+        isSystemTeam: {
+            type: DataTypes.BOOLEAN,
             allowNull: false
         },
         createdAt: DataTypes.DATE,

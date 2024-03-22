@@ -1,18 +1,19 @@
+import { Transaction } from 'sequelize';
 import { CreationTeamAttributes, TeamAttributes } from '../../types/team';
 import Member from '../models/member';
 import Team from '../models/team';
 
 class TeamRepository {
-    static async createTeam(payload: CreationTeamAttributes) {
-        return await Team.create(payload);
+    static async createTeam(payload: CreationTeamAttributes, t?: Transaction) {
+        return await Team.create(payload, { transaction: t });
     }
 
     static async getTeamById(teamId: TeamAttributes['id']) {
         return await Team.findByPk(teamId);
     }
 
-    static async addMemberToTeam(member: Member, team: Team) {
-        await member.addTeam(team);
+    static async addMemberToTeam(member: Member, team: Team, t?: Transaction) {
+        await member.addTeam(team, { transaction: t });
     }
 
     static async removeMemberFromTeam(
@@ -33,6 +34,10 @@ class TeamRepository {
                 }
             ]
         });
+    }
+
+    static async deleteTeam(teamId: TeamAttributes['id']) {
+        await Team.destroy({ where: { id: teamId } });
     }
 }
 

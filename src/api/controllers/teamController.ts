@@ -13,7 +13,10 @@ class TeamController {
         try {
             const team = await TeamService.createTeam({
                 clubId,
-                teamPayload: body
+                teamPayload: {
+                    ...body,
+                    isSystemTeam: false
+                }
             });
 
             res.status(201).send(team);
@@ -77,6 +80,22 @@ class TeamController {
             const teams = await TeamService.getTeamsWithMembers(clubId);
 
             res.status(200).send(teams);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async deleteTeam(req: Request, res: Response, next: NextFunction) {
+        const teamId: Team['id'] = Number(req.params.teamId);
+        const clubId: Club['id'] = Number(req.params.clubId);
+
+        try {
+            await TeamService.deleteTeam({
+                teamId,
+                clubId
+            });
+
+            res.status(204).send();
         } catch (error) {
             next(error);
         }

@@ -29,7 +29,7 @@ class MemberRepository {
     static async getMembersByClubId(clubId: ClubAttributes['id']) {
         return await Member.findAll({
             where: { clubId },
-            attributes: ['id', 'firstName', 'lastName', 'email', 'isAdmin']
+            attributes: { exclude: ['createdAt', 'updatedAt', 'clubId'] }
         });
     }
 

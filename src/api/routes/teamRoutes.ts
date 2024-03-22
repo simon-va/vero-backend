@@ -45,4 +45,11 @@ router.delete(
     TeamController.removeMemberFromTeam
 );
 
+router.delete(
+    '/:clubId/teams/:teamId',
+    validateParams([ParamValue.ClubId, ParamValue.TeamId]),
+    auth([AuthType.IsAdmin]),
+    TeamController.deleteTeam
+);
+
 export default router;

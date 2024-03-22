@@ -27,6 +27,12 @@ class Member extends Model<
     declare clubId: ForeignKey<Club['id']>;
     declare email: string;
     declare isAdmin: boolean;
+    declare birthDate: CreationOptional<string>;
+    declare phone: CreationOptional<string>;
+    declare address: CreationOptional<string>;
+    declare city: CreationOptional<string>;
+    declare zipCode: CreationOptional<string>;
+    declare gender: CreationOptional<number>;
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
@@ -68,6 +74,35 @@ Member.init(
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false
+        },
+        birthDate: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: ''
+        },
+        phone: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: ''
+        },
+        address: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: ''
+        },
+        city: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: ''
+        },
+        zipCode: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: ''
+        },
+        gender: {
+            type: DataTypes.INTEGER,
+            allowNull: true
         },
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE
