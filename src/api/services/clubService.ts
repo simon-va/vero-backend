@@ -35,7 +35,7 @@ class ClubService {
 
         const team = await TeamRepository.createTeam(
             {
-                name: 'Admin',
+                name: 'Manager',
                 isSystemTeam: true,
                 clubId: club.id
             },
