@@ -1,6 +1,8 @@
 import Club from '../../db/models/club';
+import User from '../../db/models/user';
 import ClubRepository from '../../db/repositories/clubRepository';
 import MemberRepository from '../../db/repositories/memberRepository';
+import UserRepository from '../../db/repositories/userRepository';
 import Error400 from '../../errors/Error400';
 import { ClubAttributes } from '../../types/club';
 import { CreationMemberAttributes, MemberAttributes } from '../../types/member';
@@ -51,6 +53,32 @@ class MemberService {
         }
 
         await MemberRepository.deleteMember(memberIdToDelete);
+    }
+
+    static async assignUserToMember(
+        memberId: MemberAttributes['id'],
+        clubId: ClubAttributes['id'],
+        email: User['email']
+    ) {
+        const user = await UserRepository.getUserByEmail(email);
+        const member = await MemberRepository.getMemberById(memberId);
+
+        if (!user) {
+            throw new Error400('User not found');
+        }
+
+        if (!member || member.clubId !== clubId) {
+            throw new Error400('Member not part of club');
+        }
+
+        await MemberRepository.updateMember({
+            id: memberId,
+            userId: user.id
+        });
+
+        return {
+            userId: user.id
+        };
     }
 }
 

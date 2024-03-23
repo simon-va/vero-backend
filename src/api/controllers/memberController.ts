@@ -75,6 +75,55 @@ class MemberController {
             next(error);
         }
     }
+
+    static async removeUserFromMember(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        const clubId: Club['id'] = Number(req.params.clubId);
+        const memberId: Member['id'] = Number(req.params.memberId);
+
+        try {
+            await MemberService.updateMember(
+                {
+                    id: memberId,
+                    // @ts-ignore
+                    userId: null
+                },
+                clubId
+            );
+
+            res.status(204).send();
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async assignUserToMember(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        const memberId: Member['id'] = Number(req.params.memberId);
+        const email: string = req.body.email;
+        const clubId: Club['id'] = Number(req.params.clubId);
+
+        try {
+            const userId = await MemberService.assignUserToMember(
+                memberId,
+                clubId,
+
+                email
+            );
+
+            res.status(200).send({
+                userId
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export default MemberController;

@@ -6,8 +6,8 @@ This documentation provides all necessary information about the planned features
 
 ### Planned Plugins
 
-- Calendar
+- Events (Calendar)
 - Inventory
 - Tasks
-- Chat
 - Finance
+- Membership

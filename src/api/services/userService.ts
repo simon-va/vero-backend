@@ -26,7 +26,15 @@ class UserService {
 
         const { id, firstName, lastName, email } = user;
 
-        return { id, firstName, lastName, email };
+        const token = jwt.sign(
+            {
+                email,
+                userId: id
+            },
+            'secret'
+        );
+
+        return { id, firstName, lastName, email, token };
     }
 
     static async loginUser({

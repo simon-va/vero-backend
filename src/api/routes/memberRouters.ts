@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import MemberController from '../controllers/memberController';
+import { auth, AuthType } from '../middlewares/auth';
 import {
     ParamValue,
     validateBody,
     validateParams
 } from '../middlewares/validate';
-import { auth, AuthType } from '../middlewares/auth';
 
 const router = Router();
 
@@ -43,6 +43,38 @@ const updateMemberSchema = {
     isAdmin: {
         optional: true,
         type: 'boolean'
+    },
+    birthDate: {
+        optional: true,
+        type: 'string'
+    },
+    phone: {
+        optional: true,
+        type: 'string'
+    },
+    address: {
+        optional: true,
+        type: 'string'
+    },
+    city: {
+        optional: true,
+        type: 'string'
+    },
+    zipCode: {
+        optional: true,
+        type: 'string'
+    },
+    gender: {
+        optional: true,
+        type: 'number'
+    },
+    $$strict: true
+};
+
+const assignUserToMemberSchema = {
+    email: {
+        required: true,
+        type: 'email'
     }
 };
 
@@ -52,6 +84,7 @@ router.get(
     auth(),
     MemberController.getMembersByClubId
 );
+
 router.post(
     '/:clubId/members',
     validateParams([ParamValue.ClubId]),
@@ -59,6 +92,15 @@ router.post(
     auth([AuthType.IsAdmin]),
     MemberController.createMember
 );
+
+router.post(
+    '/:clubId/members/:memberId/user',
+    validateParams([ParamValue.ClubId, ParamValue.MemberId]),
+    validateBody(assignUserToMemberSchema),
+    auth([AuthType.IsAdmin]),
+    MemberController.assignUserToMember
+);
+
 router.patch(
     '/:clubId/members/:memberId',
     validateParams([ParamValue.ClubId, ParamValue.MemberId]),
@@ -66,11 +108,19 @@ router.patch(
     auth([AuthType.IsAdmin]),
     MemberController.updateMember
 );
+
 router.delete(
     '/:clubId/members/:memberId',
     validateParams([ParamValue.ClubId, ParamValue.MemberId]),
     auth([AuthType.IsAdmin]),
     MemberController.deleteMember
+);
+
+router.delete(
+    '/:clubId/members/:memberId/user',
+    validateParams([ParamValue.ClubId, ParamValue.MemberId]),
+    auth([AuthType.IsAdmin]),
+    MemberController.removeUserFromMember
 );
 
 export default router;
