@@ -1,42 +1,41 @@
 import { NextFunction, Request, Response } from 'express';
 import Club from '../../db/models/club';
+import Group from '../../db/models/group';
 import Member from '../../db/models/member';
-import Team from '../../db/models/team';
-import { CreationTeamAttributes } from '../../types/team';
-import TeamService from '../services/teamService';
+import { CreationGroupAttributes } from '../../types/group';
+import GroupService from '../services/groupService';
 
-class TeamController {
-    static async createTeam(req: Request, res: Response, next: NextFunction) {
+class GroupController {
+    static async createGroup(req: Request, res: Response, next: NextFunction) {
         const clubId: Club['id'] = Number(req.params.clubId);
-        const body: CreationTeamAttributes = req.body;
+        const body: CreationGroupAttributes = req.body;
 
         try {
-            const team = await TeamService.createTeam({
+            const group = await GroupService.createGroup({
                 clubId,
-                teamPayload: {
-                    ...body,
-                    isSystemTeam: false
+                groupPayload: {
+                    ...body
                 }
             });
 
-            res.status(201).send(team);
+            res.status(201).send(group);
         } catch (error) {
             next(error);
         }
     }
 
-    static async addMemberToTeam(
+    static async addMemberToGroup(
         req: Request,
         res: Response,
         next: NextFunction
     ) {
-        const teamId: Team['id'] = Number(req.params.teamId);
+        const groupId: Group['id'] = Number(req.params.groupId);
         const memberId: Member['id'] = Number(req.params.memberId);
         const clubId: Club['id'] = Number(req.params.clubId);
 
         try {
-            await TeamService.addMemberToTeam({
-                teamId,
+            await GroupService.addMemberToGroup({
+                groupId,
                 memberId,
                 clubId
             });
@@ -47,18 +46,18 @@ class TeamController {
         }
     }
 
-    static async removeMemberFromTeam(
+    static async removeMemberFromGroup(
         req: Request,
         res: Response,
         next: NextFunction
     ) {
-        const teamId: Team['id'] = Number(req.params.teamId);
+        const groupId: Group['id'] = Number(req.params.groupId);
         const memberId: Member['id'] = Number(req.params.memberId);
         const clubId: Club['id'] = Number(req.params.clubId);
 
         try {
-            await TeamService.removeMemberFromTeam({
-                teamId,
+            await GroupService.removeMemberFromGroup({
+                groupId,
                 memberId,
                 clubId
             });
@@ -69,7 +68,7 @@ class TeamController {
         }
     }
 
-    static async getTeamsWithMembers(
+    static async getGroupsWithMembers(
         req: Request,
         res: Response,
         next: NextFunction
@@ -77,21 +76,21 @@ class TeamController {
         const clubId: Club['id'] = Number(req.params.clubId);
 
         try {
-            const teams = await TeamService.getTeamsWithMembers(clubId);
+            const groups = await GroupService.getGroupsWithMembers(clubId);
 
-            res.status(200).send(teams);
+            res.status(200).send(groups);
         } catch (error) {
             next(error);
         }
     }
 
-    static async deleteTeam(req: Request, res: Response, next: NextFunction) {
-        const teamId: Team['id'] = Number(req.params.teamId);
+    static async deleteGroup(req: Request, res: Response, next: NextFunction) {
+        const groupId: Group['id'] = Number(req.params.groupId);
         const clubId: Club['id'] = Number(req.params.clubId);
 
         try {
-            await TeamService.deleteTeam({
-                teamId,
+            await GroupService.deleteGroup({
+                groupId,
                 clubId
             });
 
@@ -102,4 +101,4 @@ class TeamController {
     }
 }
 
-export default TeamController;
+export default GroupController;

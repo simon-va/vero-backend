@@ -11,8 +11,8 @@ key features are the plugins, who help customize the software to fit the club's 
 * Users can create and manage clubs
 * Every club can have a number of members
 * Each member can have a real user assigned to them
-* Every club can have a number of teams
-* Each team can have a number of members
+* Every club can have a number of groups
+* Each group can have a number of members
 * Each club can activate a list of plugins
 
 ### Plugins

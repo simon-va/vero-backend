@@ -1,8 +1,8 @@
 import { Transaction } from 'sequelize';
 import Club from '../../db/models/club';
 import ClubRepository from '../../db/repositories/clubRepository';
+import GroupRepository from '../../db/repositories/groupRepository';
 import MemberRepository from '../../db/repositories/memberRepository';
-import TeamRepository from '../../db/repositories/teamRepository';
 import { ClubAttributes, CreationClubAttributes } from '../../types/club';
 import { UserAttributes } from '../../types/user';
 
@@ -33,18 +33,9 @@ class ClubService {
             transaction
         );
 
-        const team = await TeamRepository.createTeam(
-            {
-                name: 'Manager',
-                isSystemTeam: true,
-                clubId: club.id
-            },
-            transaction
-        );
+        await GroupRepository.addMemberToSystemGroup(member, transaction);
 
-        await TeamRepository.addMemberToTeam(member, team, transaction);
-
-        return { club, member, team };
+        return { club, member };
     }
 
     static async getClubsByUserId(userId: UserAttributes['id']) {

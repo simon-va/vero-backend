@@ -1,21 +1,21 @@
 import {
     CreationOptional,
     DataTypes,
-    ForeignKey,
     InferAttributes,
     InferCreationAttributes,
     Model,
     NonAttribute
 } from 'sequelize';
 import sequelize from '../config';
-import Club from './club';
 import Member from './member';
 
-class Team extends Model<InferAttributes<Team>, InferCreationAttributes<Team>> {
+class SystemGroup extends Model<
+    InferAttributes<SystemGroup>,
+    InferCreationAttributes<SystemGroup>
+> {
     declare id: CreationOptional<number>;
     declare name: string;
-    declare clubId: ForeignKey<Club['id']>;
-    declare isSystemTeam: boolean;
+    declare description: string;
 
     declare members?: NonAttribute<Member[]>;
 
@@ -23,7 +23,7 @@ class Team extends Model<InferAttributes<Team>, InferCreationAttributes<Team>> {
     declare updatedAt: CreationOptional<Date>;
 }
 
-Team.init(
+SystemGroup.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -34,8 +34,8 @@ Team.init(
             type: DataTypes.STRING,
             allowNull: false
         },
-        isSystemTeam: {
-            type: DataTypes.BOOLEAN,
+        description: {
+            type: DataTypes.STRING,
             allowNull: false
         },
         createdAt: DataTypes.DATE,
@@ -46,18 +46,18 @@ Team.init(
     }
 );
 
-Member.belongsToMany(Team, {
-    through: 'TeamMember',
+Member.belongsToMany(SystemGroup, {
+    through: 'SystemGroupMember',
     foreignKey: 'memberId',
-    otherKey: 'teamId',
-    as: 'teams'
+    otherKey: 'systemGroupId',
+    as: 'systemGroups'
 });
 
-Team.belongsToMany(Member, {
-    through: 'TeamMember',
-    foreignKey: 'teamId',
+SystemGroup.belongsToMany(Member, {
+    through: 'SystemGroupMember',
+    foreignKey: 'systemGroupId',
     otherKey: 'memberId',
     as: 'members'
 });
 
-export default Team;
+export default SystemGroup;

@@ -26,7 +26,7 @@ export enum ParamValue {
     UserId = 'userId',
     ClubId = 'clubId',
     MemberId = 'memberId',
-    TeamId = 'teamId',
+    GroupId = 'groupId',
     ModuleId = 'moduleId'
 }
 

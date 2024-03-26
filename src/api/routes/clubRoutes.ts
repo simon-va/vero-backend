@@ -39,7 +39,7 @@ router.post(
 router.delete(
     '/:clubId',
     validateParams([ParamValue.ClubId]),
-    auth([AuthType.IsAdmin]),
+    auth([AuthType.IsManager]),
     ClubController.deleteClub
 );
 

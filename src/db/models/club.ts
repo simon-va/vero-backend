@@ -9,8 +9,8 @@ import {
 } from 'sequelize';
 import sequelize from '../config';
 import ClubModule from './clubModule';
+import Group from './group';
 import Member from './member';
-import Team from './team';
 
 class Club extends Model<InferAttributes<Club>, InferCreationAttributes<Club>> {
     // id can be undefined during creation when using `autoIncrement`
@@ -24,13 +24,13 @@ class Club extends Model<InferAttributes<Club>, InferCreationAttributes<Club>> {
     declare updatedAt: CreationOptional<Date>;
 
     declare members?: NonAttribute<Member[]>;
-    declare teams?: NonAttribute<Team[]>;
+    declare groups?: NonAttribute<Group[]>;
     declare clubModules?: NonAttribute<ClubModule[]>;
 
     // associations
     declare static associations: {
         members: Association<Club, Member>;
-        teams: Association<Club, Team>;
+        groups: Association<Club, Group>;
         clubModules: Association<Club, ClubModule>;
     };
 }
@@ -64,12 +64,12 @@ Member.belongsTo(Club, {
     as: 'club'
 });
 
-Club.hasMany(Team, {
+Club.hasMany(Group, {
     foreignKey: 'clubId',
-    as: 'teams'
+    as: 'groups'
 });
 
-Team.belongsTo(Club, {
+Group.belongsTo(Club, {
     foreignKey: 'clubId',
     as: 'club'
 });

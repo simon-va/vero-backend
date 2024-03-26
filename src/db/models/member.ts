@@ -13,7 +13,8 @@ import {
 } from 'sequelize';
 import sequelize from '../config';
 import Club from './club';
-import Team from './team';
+import Group from './group';
+import SystemGroup from './systemGroup';
 import User from './user';
 
 class Member extends Model<
@@ -40,10 +41,19 @@ class Member extends Model<
     declare user?: NonAttribute<User>;
     declare club?: NonAttribute<Club>;
 
-    declare addTeam: BelongsToManyAddAssociationMixin<Team, number>;
-    declare removeTeam: BelongsToManyRemoveAssociationMixin<Team, number>;
+    declare addGroup: BelongsToManyAddAssociationMixin<Group, number>;
+    declare addSystemGroup: BelongsToManyAddAssociationMixin<
+        SystemGroup,
+        number
+    >;
+    declare removeGroup: BelongsToManyRemoveAssociationMixin<Group, number>;
+    declare removeSystemGroup: BelongsToManyRemoveAssociationMixin<
+        SystemGroup,
+        number
+    >;
 
-    declare hasTeam: HasManyHasAssociationMixin<Team, number>;
+    declare hasGroup: HasManyHasAssociationMixin<Group, number>;
+    declare hasSystemGroup: HasManyHasAssociationMixin<SystemGroup, number>;
 
     // associations
     declare static associations: {

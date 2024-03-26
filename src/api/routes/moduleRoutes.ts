@@ -15,14 +15,14 @@ router.get(
 router.post(
     '/:moduleId/clubs/:clubId',
     validateParams([ParamValue.ModuleId, ParamValue.ClubId]),
-    auth([AuthType.IsAdmin]),
+    auth([AuthType.IsManager]),
     ModuleController.addModuleToClub
 );
 
 router.delete(
     '/:moduleId/clubs/:clubId',
     validateParams([ParamValue.ModuleId, ParamValue.ClubId]),
-    auth([AuthType.IsAdmin]),
+    auth([AuthType.IsManager]),
     ModuleController.removeModuleFromClub
 );
 

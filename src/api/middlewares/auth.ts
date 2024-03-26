@@ -9,7 +9,7 @@ export enum AuthType {
     NoToken,
     User,
     NoMember,
-    IsAdmin
+    IsManager
 }
 
 /*
@@ -62,7 +62,7 @@ export const auth = (types: AuthType[] = []) => {
 
         if (
             !types.includes(AuthType.NoMember) ||
-            types.includes(AuthType.IsAdmin)
+            types.includes(AuthType.IsManager)
         ) {
             const clubId = Number(req.params.clubId);
             const userId: UserAttributes['id'] = res.locals.userId;
@@ -76,8 +76,14 @@ export const auth = (types: AuthType[] = []) => {
                 return res.status(401).json({ errorMessage: 'Unauthorized' });
             }
 
-            if (types.includes(AuthType.IsAdmin) && !member.isAdmin) {
-                return res.status(401).json({ errorMessage: 'Unauthorized' });
+            if (types.includes(AuthType.IsManager)) {
+                const isManager = await member.hasSystemGroup(1);
+
+                if (!isManager) {
+                    return res
+                        .status(401)
+                        .json({ errorMessage: 'Unauthorized' });
+                }
             }
 
             res.locals.member = member;

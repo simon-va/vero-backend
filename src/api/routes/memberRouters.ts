@@ -20,7 +20,7 @@ const createMemberBodySchema = {
     },
     email: {
         optional: true,
-        type: 'email'
+        type: 'string'
     },
     isAdmin: {
         optional: true,
@@ -38,7 +38,7 @@ const updateMemberSchema = {
     },
     email: {
         optional: true,
-        type: 'email'
+        type: 'string'
     },
     isAdmin: {
         optional: true,
@@ -89,7 +89,7 @@ router.post(
     '/:clubId/members',
     validateParams([ParamValue.ClubId]),
     validateBody(createMemberBodySchema),
-    auth([AuthType.IsAdmin]),
+    auth([AuthType.IsManager]),
     MemberController.createMember
 );
 
@@ -97,7 +97,7 @@ router.post(
     '/:clubId/members/:memberId/user',
     validateParams([ParamValue.ClubId, ParamValue.MemberId]),
     validateBody(assignUserToMemberSchema),
-    auth([AuthType.IsAdmin]),
+    auth([AuthType.IsManager]),
     MemberController.assignUserToMember
 );
 
@@ -105,21 +105,21 @@ router.patch(
     '/:clubId/members/:memberId',
     validateParams([ParamValue.ClubId, ParamValue.MemberId]),
     validateBody(updateMemberSchema),
-    auth([AuthType.IsAdmin]),
+    auth([AuthType.IsManager]),
     MemberController.updateMember
 );
 
 router.delete(
     '/:clubId/members/:memberId',
     validateParams([ParamValue.ClubId, ParamValue.MemberId]),
-    auth([AuthType.IsAdmin]),
+    auth([AuthType.IsManager]),
     MemberController.deleteMember
 );
 
 router.delete(
     '/:clubId/members/:memberId/user',
     validateParams([ParamValue.ClubId, ParamValue.MemberId]),
-    auth([AuthType.IsAdmin]),
+    auth([AuthType.IsManager]),
     MemberController.removeUserFromMember
 );
 

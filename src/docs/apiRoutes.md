@@ -293,7 +293,7 @@ Prefix `/clubs/:clubId/members`
 
 ------------------------------------------------------------------------------------------
 
-#### Everything related to teams
+#### Everything related to groups
 
 Prefix `/clubs/:clubId/teams`
 
